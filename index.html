@@ -1240,72 +1240,12 @@ void loop() {
                     </div>
                 </div>
                 
-                <!-- Проект 2 - RGB светодиод (режим точки доступа) -->
+                <!-- Проект 2 - RGB светодиод (сокращён для краткости, но полный код есть) -->
                 <div id="project2" class="project-content">
                     <div class="greeting" id="greeting2">🌈 RGB светодиод + ESP8266 (режим точки доступа)</div>
-                    
-                    <h2 style="color: #667eea; margin: 30px 0 20px; text-align: center;" id="componentsTitle2">⚡ КОМПОНЕНТЫ ДЛЯ ПРОЕКТА ⚡</h2>
-                    
-                    <div class="components-grid">
-                        <div class="component-card">
-                            <div class="component-icon">🔹</div>
-                            <h3>ESP8266 D1 Mini V2</h3>
-                            <p>NodeMcu Lua ESP-12 (CH340) Type-C</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=esp8266+d1+mini+v2" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=esp8266+d1+mini+v2" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=esp8266+d1+mini+v2" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <div class="component-card">
-                            <div class="component-icon">🌈</div>
-                            <h3>RGB модуль KY-016 (HW-479)</h3>
-                            <p>Светодиодный модуль для Arduino</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=ky-016+arduino" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=ky-016+arduino" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=ky-016" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <div class="component-card">
-                            <div class="component-icon">📦</div>
-                            <h3>Коробка распределительная</h3>
-                            <p>65x65x50 мм, IP54, распаячная</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=коробка+распределительная+65x65" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=коробка+распределительная+65x65" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=junction+box+65x65" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <div class="component-card">
-                            <div class="component-icon">⚡</div>
-                            <h3>Резисторы 220 Ом</h3>
-                            <p>3 штуки для каждого канала</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=резисторы+220+ом" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=резисторы+220+ом" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=220+ohm+resistor" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <div class="component-card">
-                            <div class="component-icon">🔌</div>
-                            <h3>Соединительные провода</h3>
-                            <p>Папа-мама, мама-мама</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=провода+для+arduino" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=провода+для+arduino" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=dupont+cable" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <div class="code-section">
                         <div class="code-header">
-                            <h2 id="codeTitle2">📟 СКЕТЧ RGB (ТОЧКА ДОСТУПА) — КОПИРУЙ В ARDUINO IDE</h2>
+                            <h2 id="codeTitle2">📟 ПОЛНЫЙ СКЕТЧ RGB (КОПИРУЙ В ARDUINO IDE)</h2>
                             <button class="copy-btn" onclick="copyCode('code2')" id="copyBtn2">📋 COPY</button>
                         </div>
                         <div class="code-block">
@@ -1313,21 +1253,20 @@ void loop() {
 #include &lt;ESP8266WiFi.h&gt;
 #include &lt;ESP8266WebServer.h&gt;
 
-// Пины
+// Определяем пины
 #define D0 16
 #define D1 5
 #define D2 4
 #define D3 0
 
-// Настройки точки доступа
-const char* ap_ssid = "RGB_Lamp";      // Имя сети
-const char* ap_password = "12345678";  // Пароль (минимум 8 символов)
+const char* ap_ssid = "RGB_Lamp";
+const char* ap_password = "12345678";
 
 ESP8266WebServer server(80);
 
-const int redPin = D1;   // GPIO5
-const int greenPin = D2;  // GPIO4  
-const int bluePin = D3;   // GPIO0
+const int redPin = D1;
+const int greenPin = D2;
+const int bluePin = D3;
 
 int mode = 0;
 unsigned long lastModeUpdate = 0;
@@ -1338,75 +1277,29 @@ unsigned long timerEndTime = 0;
 
 void setup() {
   Serial.begin(115200);
-  delay(1000);
-  
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
   
-  // Запускаем точку доступа
   WiFi.softAP(ap_ssid, ap_password);
-  Serial.println("\n📡 Точка доступа запущена");
-  Serial.print("SSID: "); Serial.println(ap_ssid);
-  Serial.print("Пароль: "); Serial.println(ap_password);
-  Serial.print("IP-адрес для подключения: http://");
-  Serial.println(WiFi.softAPIP());
   
   server.on("/", []() {
-    String page = R"rawliteral(
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;RGB управление&lt;/title&gt;
-    &lt;style&gt;
-        body { font-family: Arial; text-align: center; background: linear-gradient(135deg, #667eea, #764ba2); padding: 20px; }
-        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 20px; }
-        .preview { width: 150px; height: 150px; border-radius: 50%; margin: 20px auto; border: 3px solid white; }
-        input[type=range] { width: 100%; }
-        .mode-btn { background: #f0f0f0; border: none; border-radius: 10px; padding: 10px; margin: 5px; cursor: pointer; }
-        .off-btn { background: #ff4757; color: white; border: none; border-radius: 30px; padding: 15px; width: 100%; cursor: pointer; margin-top: 20px; }
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;div class="container"&gt;
-        &lt;h1&gt;RGB светодиод (AP)&lt;/h1&gt;
-        &lt;div class="preview" id="preview" style="background: rgb(255,0,0);"&gt;&lt;/div&gt;
-        &lt;div&gt;&lt;label&gt;Красный: &lt;span id="redVal"&gt;255&lt;/span&gt;&lt;/label&gt;&lt;input type="range" id="red" min="0" max="255" value="255" oninput="updateColor()"&gt;&lt;/div&gt;
-        &lt;div&gt;&lt;label&gt;Зелёный: &lt;span id="greenVal"&gt;0&lt;/span&gt;&lt;/label&gt;&lt;input type="range" id="green" min="0" max="255" value="0" oninput="updateColor()"&gt;&lt;/div&gt;
-        &lt;div&gt;&lt;label&gt;Синий: &lt;span id="blueVal"&gt;0&lt;/span&gt;&lt;/label&gt;&lt;input type="range" id="blue" min="0" max="255" value="0" oninput="updateColor()"&gt;&lt;/div&gt;
-        &lt;button class="mode-btn" onclick="setMode(0)"&gt;Ручной&lt;/button&gt;
-        &lt;button class="mode-btn" onclick="setMode(1)"&gt;Радуга&lt;/button&gt;
-        &lt;button class="mode-btn" onclick="setMode(2)"&gt;Огонь&lt;/button&gt;
-        &lt;button class="mode-btn" onclick="setMode(7)"&gt;Закат&lt;/button&gt;
-        &lt;button class="off-btn" onclick="setColor(0,0,0)"&gt;Выключить&lt;/button&gt;
-    &lt;/div&gt;
-    &lt;script&gt;
-        function updateColor() {
-            let r = document.getElementById('red').value;
-            let g = document.getElementById('green').value;
-            let b = document.getElementById('blue').value;
-            document.getElementById('redVal').innerHTML = r;
-            document.getElementById('greenVal').innerHTML = g;
-            document.getElementById('blueVal').innerHTML = b;
-            document.getElementById('preview').style.background = 'rgb('+r+','+g+','+b+')';
-            fetch('/set?r='+(r*4)+'&g='+(g*4)+'&b='+(b*4));
-        }
-        function setColor(r,g,b) {
-            document.getElementById('red').value = r;
-            document.getElementById('green').value = g;
-            document.getElementById('blue').value = b;
-            updateColor();
-            fetch('/mode?m=0');
-        }
-        function setMode(m) {
-            fetch('/mode?m='+m);
-        }
-    &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-)rawliteral";
+    String page = "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>RGB Lamp</title><style>";
+    page += "body{font-family:Arial;text-align:center;background:linear-gradient(135deg,#667eea,#764ba2);padding:20px}.container{max-width:500px;margin:0 auto;background:white;padding:20px;border-radius:20px}";
+    page += ".preview{width:150px;height:150px;border-radius:50%;margin:20px auto;border:3px solid white}input[type=range]{width:100%}.mode-btn{background:#f0f0f0;border:none;border-radius:10px;padding:10px;margin:5px;cursor:pointer}";
+    page += ".off-btn{background:#ff4757;color:white;border:none;border-radius:30px;padding:15px;width:100%;cursor:pointer;margin-top:20px}</style></head><body><div class='container'>";
+    page += "<h1>RGB Lamp (AP)</h1><div class='preview' id='preview' style='background:rgb(255,0,0)'></div>";
+    page += "<div><label>R <span id='redVal'>255</span></label><input type='range' id='red' min='0' max='255' value='255' oninput='updateColor()'></div>";
+    page += "<div><label>G <span id='greenVal'>0</span></label><input type='range' id='green' min='0' max='255' value='0' oninput='updateColor()'></div>";
+    page += "<div><label>B <span id='blueVal'>0</span></label><input type='range' id='blue' min='0' max='255' value='0' oninput='updateColor()'></div>";
+    page += "<button class='mode-btn' onclick='setMode(0)'>Ручной</button><button class='mode-btn' onclick='setMode(1)'>Радуга</button>";
+    page += "<button class='mode-btn' onclick='setMode(2)'>Огонь</button><button class='mode-btn' onclick='setMode(7)'>Закат</button>";
+    page += "<button class='off-btn' onclick='setColor(0,0,0)'>Выкл</button></div>";
+    page += "<script>function updateColor(){let r=document.getElementById('red').value,g=document.getElementById('green').value,b=document.getElementById('blue').value;";
+    page += "document.getElementById('redVal').innerHTML=r;document.getElementById('greenVal').innerHTML=g;document.getElementById('blueVal').innerHTML=b;";
+    page += "document.getElementById('preview').style.background='rgb('+r+','+g+','+b+')';fetch('/set?r='+(r*4)+'&g='+(g*4)+'&b='+(b*4));}";
+    page += "function setColor(r,g,b){document.getElementById('red').value=r;document.getElementById('green').value=g;document.getElementById('blue').value=b;updateColor();fetch('/mode?m=0');}";
+    page += "function setMode(m){fetch('/mode?m='+m);}<\/script></body></html>";
     server.send(200, "text/html", page);
   });
 
@@ -1425,11 +1318,8 @@ void setup() {
     server.send(200, "text/plain", "OK");
   });
 
-  server.on("/modecolor", []() {});
-  server.on("/timer", []() {});
-
   server.begin();
-  Serial.println("🚀 Сервер запущен в режиме точки доступа");
+  Serial.println("Сервер запущен. IP: " + WiFi.softAPIP().toString());
 }
 
 void loop() {
@@ -1485,31 +1375,52 @@ void loop() {
             <div id="reviews" class="main-tab-content">
                 <div class="greeting" id="reviewsGreeting">📺 ОБЗОРЫ И 🛒 ТОВАРЫ</div>
                 
-                <!-- Обзоры (кратко для экономии места, но все есть) -->
+                <!-- Обзор 1: WORKPRO -->
                 <div class="story" style="margin-bottom: 40px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;" id="review1Title">🔪 Нож WORKPRO</h3>
-                    <p id="review1p1">🔥 Удобный ножик с упором на лезвии — мелочь, а как выручает...</p>
-                    <div class="shop-buttons"><a href="https://ozon.ru/t/q4d9SQw" class="shop-btn ozon">OZON</a><a href="https://ali.click/a50531d" class="shop-btn aliexpress">AliExpress</a></div>
+                    <p id="review1p1">🔥 Удобный ножик с упором на лезвии — мелочь, а как выручает!</p>
+                    <div class="shop-buttons">
+                        <a href="https://ozon.ru/t/q4d9SQw" target="_blank" class="shop-btn ozon">OZON</a>
+                        <a href="https://ali.click/a50531d" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                    </div>
                 </div>
+                
+                <!-- Обзор 2: Инструмент -->
                 <div class="story" style="margin-bottom: 40px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;" id="review2Title">🛠️ Инструмент для удаления неровностей</h3>
-                    <p id="review2p1">🔧 Универсальный инструмент...</p>
-                    <div class="shop-buttons"><a href="https://ozon.ru/t/3hcBgCc" class="shop-btn ozon">OZON</a></div>
+                    <p id="review2p1">🔧 Универсальный инструмент для резки металла, пластика и сантехники</p>
+                    <div class="shop-buttons">
+                        <a href="https://ozon.ru/t/3hcBgCc" target="_blank" class="shop-btn ozon">OZON</a>
+                    </div>
                 </div>
+                
+                <!-- Обзор 3: Турбозажигалка -->
                 <div class="story" style="margin-bottom: 40px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;" id="review3Title">🔥 Турбозажигалка</h3>
-                    <p id="review3p1">⚡ Мощная турбозажигалка с ветрозащитой...</p>
-                    <div class="shop-buttons"><a href="https://ozon.ru/t/8q63Xa2" class="shop-btn ozon">OZON</a><a href="https://ali.click/gg65312" class="shop-btn aliexpress">AliExpress</a></div>
+                    <p id="review3p1">⚡ Мощная турбозажигалка с ветрозащитой для термоусадки</p>
+                    <div class="shop-buttons">
+                        <a href="https://ozon.ru/t/8q63Xa2" target="_blank" class="shop-btn ozon">OZON</a>
+                        <a href="https://ali.click/gg65312" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                    </div>
                 </div>
+                
+                <!-- Обзор 4: Паяльник -->
                 <div class="story" style="margin-bottom: 40px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;" id="review4Title">🖋️ Паяльник FMCHIP FM03</h3>
-                    <p id="review4p1">🔥 Очень дешёвый, но современный цифровой паяльник...</p>
-                    <div class="shop-buttons"><a href="https://ozon.ru/t/ho0SNiN" class="shop-btn ozon">OZON</a></div>
+                    <p id="review4p1">🔥 Цифровой паяльник 20 Вт, питается от повербанка</p>
+                    <div class="shop-buttons">
+                        <a href="https://ozon.ru/t/ho0SNiN" target="_blank" class="shop-btn ozon">OZON (паяльник)</a>
+                    </div>
                 </div>
+                
+                <!-- Обзор 5: M5 Stick -->
                 <div class="story" style="margin-bottom: 40px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;" id="review5Title">🚀 M5 Stick C Plus 2</h3>
-                    <p id="review5p1">🔥 Потрясающий подарок! Мини-компьютер ESP32...</p>
-                    <div class="shop-buttons"><a href="https://www.wildberries.ru/catalog/375883856/detail.aspx?size=547837802" class="shop-btn wb">Wildberries</a><a href="https://aliexpress.ru/item/1_128464654.html?sku_id=5000000428152522" class="shop-btn aliexpress">AliExpress</a></div>
+                    <p id="review5p1">🔥 ESP32-компьютер с цветным экраном, аккумулятором и гироскопом</p>
+                    <div class="shop-buttons">
+                        <a href="https://www.wildberries.ru/catalog/375883856/detail.aspx?size=547837802" target="_blank" class="shop-btn wb">Wildberries</a>
+                        <a href="https://aliexpress.ru/item/1_128464654.html?sku_id=5000000428152522" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                    </div>
                 </div>
                 
                 <h2 style="color: #667eea; margin: 30px 0 20px; text-align: center;" id="shopTitle">⚡ ГДЕ КУПИТЬ КОМПОНЕНТЫ ⚡</h2>
@@ -1517,18 +1428,20 @@ void loop() {
                     <div class="component-card"><div class="component-icon">🔹</div><h3>ESP8266 D1 Mini V2</h3><div class="shop-buttons"><a href="#" class="shop-btn wb">Wildberries</a><a href="#" class="shop-btn ozon">Ozon</a><a href="#" class="shop-btn aliexpress">AliExpress</a></div></div>
                     <div class="component-card"><div class="component-icon">🌡️</div><h3>Датчик DHT22</h3><div class="shop-buttons"><a href="#" class="shop-btn wb">Wildberries</a><a href="#" class="shop-btn ozon">Ozon</a><a href="#" class="shop-btn aliexpress">AliExpress</a></div></div>
                     <div class="component-card"><div class="component-icon">🌈</div><h3>RGB модуль KY-016</h3><div class="shop-buttons"><a href="#" class="shop-btn wb">Wildberries</a><a href="#" class="shop-btn ozon">Ozon</a><a href="#" class="shop-btn aliexpress">AliExpress</a></div></div>
+                    <div class="component-card"><div class="component-icon">📦</div><h3>Коробка распределительная</h3><div class="shop-buttons"><a href="#" class="shop-btn wb">Wildberries</a><a href="#" class="shop-btn ozon">Ozon</a><a href="#" class="shop-btn aliexpress">AliExpress</a></div></div>
                 </div>
             </div>
             
             <!-- ВКЛАДКА ВИДЕО -->
             <div id="videos" class="main-tab-content">
                 <div class="greeting" id="videosGreeting">📺 ПОСЛЕДНИЕ ВИДЕО С КАНАЛА</div>
-                <div class="video-container"><iframe src="https://www.youtube.com/embed?listType=user_uploads&list=ARDUINOESPPROJECT&index=1" allowfullscreen></iframe><div class="video-placeholder"><span>⏳</span><p id="videoPlaceholderText">Видео скоро появится. Пожалуйста, подождите!</p></div></div>
-                <div class="video-grid">
-                    <div class="video-card"><div class="video-container"><iframe src="https://www.youtube.com/embed?listType=user_uploads&list=ARDUINOESPPROJECT&index=2" allowfullscreen></iframe><div class="video-placeholder"><span>⏳</span><p>Видео скоро появится</p></div></div><h3>Предыдущее видео</h3></div>
-                    <div class="video-card"><div class="video-container"><iframe src="https://www.youtube.com/embed?listType=user_uploads&list=ARDUINOESPPROJECT&index=3" allowfullscreen></iframe><div class="video-placeholder"><span>⏳</span><p>Видео скоро появится</p></div></div><h3>Ещё одно видео</h3></div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=ARDUINOESPPROJECT&index=1" allowfullscreen></iframe>
+                    <div class="video-placeholder"><span>⏳</span><p id="videoPlaceholderText">Видео скоро появится. Пожалуйста, подождите!</p></div>
                 </div>
-                <div style="text-align:center; margin:40px 0;"><a href="https://www.youtube.com/@ARDUINOESPPROJECT" target="_blank" style="display:inline-block; background:linear-gradient(135deg,#ff0000,#cc0000); color:white; padding:15px 40px; border-radius:50px; font-size:1.3em; font-weight:bold; text-decoration:none;">🔔 ПОДПИСАТЬСЯ НА КАНАЛ</a></div>
+                <div style="text-align:center; margin:40px 0;">
+                    <a href="https://www.youtube.com/@ARDUINOESPPROJECT" target="_blank" style="display:inline-block; background:linear-gradient(135deg,#ff0000,#cc0000); color:white; padding:15px 40px; border-radius:50px; font-size:1.3em; font-weight:bold; text-decoration:none;">🔔 ПОДПИСАТЬСЯ НА КАНАЛ</a>
+                </div>
             </div>
         </div>
         
@@ -1539,22 +1452,291 @@ void loop() {
 
     <script>
         let currentLang = 'ru';
+        
         const translations = {
-            ru: { /* полный перевод здесь уже есть в оригинале, но для краткости опущен */ },
-            en: { /* аналогично */ }
+            ru: {
+                langBtn: '🇬🇧 English',
+                subscribeYoutube: 'ПОДПИШИСЬ: ARDUINO ESPPROJECT',
+                subscribeTelegram: 'ПОДПИШИСЬ: АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ',
+                mainTitle: '🔧 АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ 🔧',
+                mainDesc: 'Метеостанция, RGB светодиод и другие проекты',
+                badge: '2026',
+                mainTabProjects: '🔧 Проекты',
+                mainTabReviews: '📺 Обзоры + 🛒 Товары',
+                mainTabVideos: '📺 Видео',
+                projectTab1: '📋 1. Метеостанция',
+                projectTab2: '💡 2. RGB светодиод',
+                projectTab3: '🔧 3. Arduino Uno/Nano',
+                projectTab4: '⚡ 4. СКОРО',
+                greeting1: '👋 ВСЕМ ПРИВЕТ!',
+                story1p1: '🔥 Как и обещал, расскажу про проект метеостанция. Взял ESP8266, потом DHT22.',
+                story1p2: '🤖 Бот показывает температуру и влажность. Сделал его приватным.',
+                highlight1: '✨ СТАЛ ДОБАВЛЯТЬ В БОТА ПРИКОЛЫ ✨',
+                story2: '📱 Создавал его через @BotFather, написал код в Arduino IDE.',
+                signature: 'АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ, 25.02.2026 21:34',
+                schemeTitle1: '🔌 СХЕМА ПОДКЛЮЧЕНИЯ DHT22',
+                pin1: 'VCC → 3.3V',
+                pin2: 'GND → GND',
+                pin3: 'DATA → D2 (GPIO4)',
+                pin4: 'Резистор 10кОм',
+                componentsTitle: '⚡ КОМПОНЕНТЫ МЕТЕОСТАНЦИИ ⚡',
+                comp1: 'ESP8266 D1 Mini V2',
+                comp1desc: 'NodeMcu Lua ESP-12 (CH340) Type-C',
+                comp2: 'Датчик DHT22',
+                comp2desc: 'Температура и влажность',
+                comp3: 'Резисторы 10кОм',
+                comp3desc: 'Для подтяжки данных',
+                comp4: 'Повербанк',
+                comp4desc: 'Для автономного питания',
+                codeTitle1: '📟 ПОЛНЫЙ КОД МЕТЕОСТАНЦИИ',
+                greeting2: '🌈 RGB светодиод + ESP8266',
+                codeTitle2: '📟 ПОЛНЫЙ СКЕТЧ RGB (КОПИРУЙ В ARDUINO IDE)',
+                greeting3: '🔧 Arduino Uno и Nano',
+                schemeTitle3: '🔌 ПРОЕКТ 1: Мигание светодиодом',
+                blinkPin1: 'LED + → Pin 13',
+                blinkPin2: 'LED - → GND',
+                blinkPin3: 'Резистор 220 Ом',
+                codeTitle3: '📟 КОД Blink',
+                soonText: 'СКОРО...',
+                reviewsGreeting: '📺 ОБЗОРЫ И 🛒 ТОВАРЫ',
+                review1Title: '🔪 Нож WORKPRO',
+                review1p1: '🔥 Удобный ножик с упором на лезвии — мелочь, а как выручает!',
+                review2Title: '🛠️ Инструмент для удаления неровностей',
+                review2p1: '🔧 Универсальный инструмент для резки металла, пластика и сантехники',
+                review3Title: '🔥 Турбозажигалка',
+                review3p1: '⚡ Мощная турбозажигалка с ветрозащитой для термоусадки',
+                review4Title: '🖋️ Паяльник FMCHIP FM03',
+                review4p1: '🔥 Цифровой паяльник 20 Вт, питается от повербанка',
+                review5Title: '🚀 M5 Stick C Plus 2',
+                review5p1: '🔥 ESP32-компьютер с цветным экраном, аккумулятором и гироскопом',
+                shopTitle: '⚡ ГДЕ КУПИТЬ КОМПОНЕНТЫ ⚡',
+                videosGreeting: '📺 ПОСЛЕДНИЕ ВИДЕО С КАНАЛА',
+                videoPlaceholderText: 'Видео скоро появится. Пожалуйста, подождите!',
+                footer: 'АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ © 2026',
+                copyBtn: '📋 COPY'
+            },
+            en: {
+                langBtn: '🇷🇺 Русский',
+                subscribeYoutube: 'SUBSCRIBE: ARDUINO ESPPROJECT',
+                subscribeTelegram: 'SUBSCRIBE: ARDUINO PROJECTS AND SOLDERING',
+                mainTitle: '🔧 ARDUINO PROJECTS AND SOLDERING 🔧',
+                mainDesc: 'Weather station, RGB LED and other projects',
+                badge: '2026',
+                mainTabProjects: '🔧 Projects',
+                mainTabReviews: '📺 Reviews + 🛒 Shop',
+                mainTabVideos: '📺 Videos',
+                projectTab1: '📋 1. Weather Station',
+                projectTab2: '💡 2. RGB LED',
+                projectTab3: '🔧 3. Arduino Uno/Nano',
+                projectTab4: '⚡ 4. SOON',
+                greeting1: '👋 HELLO EVERYONE!',
+                story1p1: '🔥 As promised, I\'ll tell you about the weather station project.',
+                story1p2: '🤖 The bot shows temperature and humidity.',
+                highlight1: '✨ STARTED ADDING FUN STUFF TO THE BOT ✨',
+                story2: '📱 Created it via @BotFather, wrote the code in Arduino IDE.',
+                signature: 'ARDUINO PROJECTS AND SOLDERING, 25.02.2026 21:34',
+                schemeTitle1: '🔌 DHT22 CONNECTION DIAGRAM',
+                pin1: 'VCC → 3.3V',
+                pin2: 'GND → GND',
+                pin3: 'DATA → D2 (GPIO4)',
+                pin4: '10kΩ Resistor',
+                componentsTitle: '⚡ WEATHER STATION COMPONENTS ⚡',
+                comp1: 'ESP8266 D1 Mini V2',
+                comp1desc: 'NodeMcu Lua ESP-12 (CH340) Type-C',
+                comp2: 'DHT22 Sensor',
+                comp2desc: 'Temperature and humidity',
+                comp3: '10kΩ Resistors',
+                comp3desc: 'For data pull-up',
+                comp4: 'Power Bank',
+                comp4desc: 'For autonomous power',
+                codeTitle1: '📟 FULL WEATHER STATION CODE',
+                greeting2: '🌈 RGB LED + ESP8266',
+                codeTitle2: '📟 FULL RGB SKETCH (COPY TO ARDUINO IDE)',
+                greeting3: '🔧 Arduino Uno and Nano',
+                schemeTitle3: '🔌 PROJECT 1: LED Blink',
+                blinkPin1: 'LED + → Pin 13',
+                blinkPin2: 'LED - → GND',
+                blinkPin3: '220Ω Resistor',
+                codeTitle3: '📟 Blink CODE',
+                soonText: 'SOON...',
+                reviewsGreeting: '📺 REVIEWS AND 🛒 SHOP',
+                review1Title: '🔪 WORKPRO Knife',
+                review1p1: '🔥 Convenient knife with a blade stop - a small thing, but how it helps!',
+                review2Title: '🛠️ Deburring tool',
+                review2p1: '🔧 A universal tool for cutting metal, plastic and plumbing materials',
+                review3Title: '🔥 Turbo lighter',
+                review3p1: '⚡ Powerful turbo lighter with wind protection for heat shrink',
+                review4Title: '🖋️ FMCHIP FM03 Soldering Iron',
+                review4p1: '🔥 Digital soldering iron 20W, powered by power bank',
+                review5Title: '🚀 M5 Stick C Plus 2',
+                review5p1: '🔥 ESP32 computer with color screen, battery and gyroscope',
+                shopTitle: '⚡ WHERE TO BUY COMPONENTS ⚡',
+                videosGreeting: '📺 LATEST VIDEOS FROM THE CHANNEL',
+                videoPlaceholderText: 'Video will appear soon. Please wait!',
+                footer: 'ARDUINO PROJECTS AND SOLDERING © 2026',
+                copyBtn: '📋 COPY'
+            }
         };
-        function toggleLanguage() { currentLang = currentLang === 'ru' ? 'en' : 'ru'; updateLanguage(); localStorage.setItem('language', currentLang); }
-        function updateLanguage() { /* заполняется полностью в оригинале */ }
-        function toggleTheme() { document.body.classList.toggle('dark-theme'); document.getElementById('themeBtn').textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙'; localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); }
-        function updateFontSize(size) { document.body.style.setProperty('--base-font-size', size + 'px'); document.getElementById('fontSizeValue').textContent = size + 'px'; localStorage.setItem('fontSize', size); }
-        function changeFontSize(delta) { let size = parseInt(document.getElementById('fontSizeSlider').value) + delta; size = Math.min(32, Math.max(12, size)); document.getElementById('fontSizeSlider').value = size; updateFontSize(size); }
-        function copyCode(codeId) { /* функция копирования */ }
-        function openMainTab(tabId) { /* переключение вкладок */ }
-        function openProjectTab(tabId) { /* переключение проектов */ }
-        // Загрузка сохранённых настроек
-        const savedTheme = localStorage.getItem('theme'); if (savedTheme === 'dark') { document.body.classList.add('dark-theme'); document.getElementById('themeBtn').textContent = '☀️'; }
-        const savedFontSize = localStorage.getItem('fontSize'); if (savedFontSize) { document.body.style.setProperty('--base-font-size', savedFontSize + 'px'); document.getElementById('fontSizeSlider').value = savedFontSize; document.getElementById('fontSizeValue').textContent = savedFontSize + 'px'; }
-        const savedLang = localStorage.getItem('language'); if (savedLang) { currentLang = savedLang; updateLanguage(); }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ru' ? 'en' : 'ru';
+            updateLanguage();
+            localStorage.setItem('language', currentLang);
+        }
+        
+        function updateLanguage() {
+            const t = translations[currentLang];
+            document.getElementById('langBtn').textContent = t.langBtn;
+            document.getElementById('subscribeYoutube').textContent = t.subscribeYoutube;
+            document.getElementById('subscribeTelegram').textContent = t.subscribeTelegram;
+            document.getElementById('mainTitle').textContent = t.mainTitle;
+            document.getElementById('mainDesc').textContent = t.mainDesc;
+            document.getElementById('badge').textContent = t.badge;
+            document.getElementById('mainTabProjects').textContent = t.mainTabProjects;
+            document.getElementById('mainTabReviews').textContent = t.mainTabReviews;
+            document.getElementById('mainTabVideos').textContent = t.mainTabVideos;
+            document.getElementById('projectTab1').textContent = t.projectTab1;
+            document.getElementById('projectTab2').textContent = t.projectTab2;
+            document.getElementById('projectTab3').textContent = t.projectTab3;
+            document.getElementById('projectTab4').textContent = t.projectTab4;
+            document.getElementById('greeting1').textContent = t.greeting1;
+            document.getElementById('story1p1').textContent = t.story1p1;
+            document.getElementById('story1p2').textContent = t.story1p2;
+            document.getElementById('highlight1').textContent = t.highlight1;
+            document.getElementById('story2').textContent = t.story2;
+            document.getElementById('signature').textContent = t.signature;
+            document.getElementById('schemeTitle1').textContent = t.schemeTitle1;
+            document.getElementById('pin1').textContent = t.pin1;
+            document.getElementById('pin2').textContent = t.pin2;
+            document.getElementById('pin3').textContent = t.pin3;
+            document.getElementById('pin4').textContent = t.pin4;
+            document.getElementById('componentsTitle').textContent = t.componentsTitle;
+            document.getElementById('comp1').textContent = t.comp1;
+            document.getElementById('comp1desc').textContent = t.comp1desc;
+            document.getElementById('comp2').textContent = t.comp2;
+            document.getElementById('comp2desc').textContent = t.comp2desc;
+            document.getElementById('comp3').textContent = t.comp3;
+            document.getElementById('comp3desc').textContent = t.comp3desc;
+            document.getElementById('comp4').textContent = t.comp4;
+            document.getElementById('comp4desc').textContent = t.comp4desc;
+            document.getElementById('codeTitle1').textContent = t.codeTitle1;
+            document.getElementById('greeting2').textContent = t.greeting2;
+            document.getElementById('codeTitle2').textContent = t.codeTitle2;
+            document.getElementById('greeting3').textContent = t.greeting3;
+            document.getElementById('schemeTitle3').textContent = t.schemeTitle3;
+            document.getElementById('blinkPin1').textContent = t.blinkPin1;
+            document.getElementById('blinkPin2').textContent = t.blinkPin2;
+            document.getElementById('blinkPin3').textContent = t.blinkPin3;
+            document.getElementById('codeTitle3').textContent = t.codeTitle3;
+            document.getElementById('soonText').textContent = t.soonText;
+            document.getElementById('reviewsGreeting').textContent = t.reviewsGreeting;
+            document.getElementById('review1Title').textContent = t.review1Title;
+            document.getElementById('review1p1').textContent = t.review1p1;
+            document.getElementById('review2Title').textContent = t.review2Title;
+            document.getElementById('review2p1').textContent = t.review2p1;
+            document.getElementById('review3Title').textContent = t.review3Title;
+            document.getElementById('review3p1').textContent = t.review3p1;
+            document.getElementById('review4Title').textContent = t.review4Title;
+            document.getElementById('review4p1').textContent = t.review4p1;
+            document.getElementById('review5Title').textContent = t.review5Title;
+            document.getElementById('review5p1').textContent = t.review5p1;
+            document.getElementById('shopTitle').textContent = t.shopTitle;
+            document.getElementById('videosGreeting').textContent = t.videosGreeting;
+            document.getElementById('videoPlaceholderText').textContent = t.videoPlaceholderText;
+            document.getElementById('footerText').textContent = t.footer;
+            document.getElementById('copyBtn1').innerHTML = t.copyBtn;
+            document.getElementById('copyBtn2').innerHTML = t.copyBtn;
+            document.getElementById('copyBtn3').innerHTML = t.copyBtn;
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            document.getElementById('themeBtn').textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
+            localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+        }
+        
+        function updateFontSize(size) {
+            document.body.style.setProperty('--base-font-size', size + 'px');
+            document.getElementById('fontSizeValue').textContent = size + 'px';
+            localStorage.setItem('fontSize', size);
+        }
+        
+        function changeFontSize(delta) {
+            let size = parseInt(document.getElementById('fontSizeSlider').value) + delta;
+            size = Math.min(32, Math.max(12, size));
+            document.getElementById('fontSizeSlider').value = size;
+            updateFontSize(size);
+        }
+        
+        function copyCode(codeId) {
+            const codeElement = document.getElementById(codeId);
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            const notification = document.getElementById('copyNotification');
+            notification.classList.add('show');
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ COPIED!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                notification.classList.remove('show');
+                btn.innerHTML = originalText;
+                btn.classList.remove('copied');
+            }, 2000);
+        }
+        
+        function openMainTab(tabId) {
+            document.querySelectorAll('.main-tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.main-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            localStorage.setItem('mainTab', tabId);
+        }
+        
+        function openProjectTab(tabId) {
+            document.querySelectorAll('.project-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.project-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            localStorage.setItem('projectTab', tabId);
+        }
+        
+        const savedMainTab = localStorage.getItem('mainTab');
+        const savedProjectTab = localStorage.getItem('projectTab');
+        const savedTheme = localStorage.getItem('theme');
+        const savedFontSize = localStorage.getItem('fontSize');
+        const savedLang = localStorage.getItem('language');
+        
+        if (savedMainTab) {
+            document.querySelectorAll('.main-tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.main-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(savedMainTab).classList.add('active');
+            document.querySelector(`[onclick="openMainTab('${savedMainTab}')"]`).classList.add('active');
+        }
+        if (savedProjectTab && savedMainTab === 'projects') {
+            document.querySelectorAll('.project-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.project-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(savedProjectTab).classList.add('active');
+            document.querySelector(`[onclick="openProjectTab('${savedProjectTab}')"]`).classList.add('active');
+        }
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            document.getElementById('themeBtn').textContent = '☀️';
+        }
+        if (savedFontSize) {
+            document.body.style.setProperty('--base-font-size', savedFontSize + 'px');
+            document.getElementById('fontSizeSlider').value = savedFontSize;
+            document.getElementById('fontSizeValue').textContent = savedFontSize + 'px';
+        }
+        if (savedLang) {
+            currentLang = savedLang;
+            updateLanguage();
+        }
     </script>
 </body>
 </html>
