@@ -936,7 +936,7 @@
                 <button class="main-tab-btn" onclick="openMainTab('videos')" id="mainTabVideos">📺 Видео</button>
             </div>
             
-            <!-- РЕКЛАМНЫЙ БЛОК ВОЛНЫ (ПОДНЯТ НАВЕРХ) -->
+            <!-- РЕКЛАМНЫЙ БЛОК ВОЛНЫ -->
             <div class="volna-ad-block">
                 <div class="volna-banner">
                     <div class="volna-content">
@@ -1240,7 +1240,7 @@ void loop() {
                     </div>
                 </div>
                 
-                <!-- Проект 2 - RGB светодиод (сокращён для краткости, но полный код есть) -->
+                <!-- Проект 2 - RGB светодиод -->
                 <div id="project2" class="project-content">
                     <div class="greeting" id="greeting2">🌈 RGB светодиод + ESP8266 (режим точки доступа)</div>
                     <div class="code-section">
@@ -1284,22 +1284,60 @@ void setup() {
   WiFi.softAP(ap_ssid, ap_password);
   
   server.on("/", []() {
-    String page = "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>RGB Lamp</title><style>";
-    page += "body{font-family:Arial;text-align:center;background:linear-gradient(135deg,#667eea,#764ba2);padding:20px}.container{max-width:500px;margin:0 auto;background:white;padding:20px;border-radius:20px}";
-    page += ".preview{width:150px;height:150px;border-radius:50%;margin:20px auto;border:3px solid white}input[type=range]{width:100%}.mode-btn{background:#f0f0f0;border:none;border-radius:10px;padding:10px;margin:5px;cursor:pointer}";
-    page += ".off-btn{background:#ff4757;color:white;border:none;border-radius:30px;padding:15px;width:100%;cursor:pointer;margin-top:20px}</style></head><body><div class='container'>";
-    page += "<h1>RGB Lamp (AP)</h1><div class='preview' id='preview' style='background:rgb(255,0,0)'></div>";
-    page += "<div><label>R <span id='redVal'>255</span></label><input type='range' id='red' min='0' max='255' value='255' oninput='updateColor()'></div>";
-    page += "<div><label>G <span id='greenVal'>0</span></label><input type='range' id='green' min='0' max='255' value='0' oninput='updateColor()'></div>";
-    page += "<div><label>B <span id='blueVal'>0</span></label><input type='range' id='blue' min='0' max='255' value='0' oninput='updateColor()'></div>";
-    page += "<button class='mode-btn' onclick='setMode(0)'>Ручной</button><button class='mode-btn' onclick='setMode(1)'>Радуга</button>";
-    page += "<button class='mode-btn' onclick='setMode(2)'>Огонь</button><button class='mode-btn' onclick='setMode(7)'>Закат</button>";
-    page += "<button class='off-btn' onclick='setColor(0,0,0)'>Выкл</button></div>";
-    page += "<script>function updateColor(){let r=document.getElementById('red').value,g=document.getElementById('green').value,b=document.getElementById('blue').value;";
-    page += "document.getElementById('redVal').innerHTML=r;document.getElementById('greenVal').innerHTML=g;document.getElementById('blueVal').innerHTML=b;";
-    page += "document.getElementById('preview').style.background='rgb('+r+','+g+','+b+')';fetch('/set?r='+(r*4)+'&g='+(g*4)+'&b='+(b*4));}";
-    page += "function setColor(r,g,b){document.getElementById('red').value=r;document.getElementById('green').value=g;document.getElementById('blue').value=b;updateColor();fetch('/mode?m=0');}";
-    page += "function setMode(m){fetch('/mode?m='+m);}<\/script></body></html>";
+    String page = R"rawliteral(
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;RGB Lamp (AP Mode)&lt;/title&gt;
+    &lt;style&gt;
+        body{font-family:Arial;text-align:center;background:linear-gradient(135deg,#667eea,#764ba2);padding:20px}
+        .container{max-width:500px;margin:0 auto;background:white;padding:20px;border-radius:20px}
+        .preview{width:150px;height:150px;border-radius:50%;margin:20px auto;border:3px solid white}
+        input[type=range]{width:100%}
+        .mode-btn{background:#f0f0f0;border:none;border-radius:10px;padding:10px;margin:5px;cursor:pointer}
+        .off-btn{background:#ff4757;color:white;border:none;border-radius:30px;padding:15px;width:100%;cursor:pointer;margin-top:20px}
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;h1&gt;RGB Lamp (AP Mode)&lt;/h1&gt;
+        &lt;div class="preview" id="preview" style="background:rgb(255,0,0)"&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;label&gt;Red &lt;span id="redVal"&gt;255&lt;/span&gt;&lt;/label&gt;&lt;input type="range" id="red" min="0" max="255" value="255" oninput="updateColor()"&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;label&gt;Green &lt;span id="greenVal"&gt;0&lt;/span&gt;&lt;/label&gt;&lt;input type="range" id="green" min="0" max="255" value="0" oninput="updateColor()"&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;label&gt;Blue &lt;span id="blueVal"&gt;0&lt;/span&gt;&lt;/label&gt;&lt;input type="range" id="blue" min="0" max="255" value="0" oninput="updateColor()"&gt;&lt;/div&gt;
+        &lt;button class="mode-btn" onclick="setMode(0)"&gt;Manual&lt;/button&gt;
+        &lt;button class="mode-btn" onclick="setMode(1)"&gt;Rainbow&lt;/button&gt;
+        &lt;button class="mode-btn" onclick="setMode(2)"&gt;Fire&lt;/button&gt;
+        &lt;button class="mode-btn" onclick="setMode(7)"&gt;Sunset&lt;/button&gt;
+        &lt;button class="off-btn" onclick="setColor(0,0,0)"&gt;OFF&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+        function updateColor(){
+            let r=document.getElementById('red').value;
+            let g=document.getElementById('green').value;
+            let b=document.getElementById('blue').value;
+            document.getElementById('redVal').innerHTML=r;
+            document.getElementById('greenVal').innerHTML=g;
+            document.getElementById('blueVal').innerHTML=b;
+            document.getElementById('preview').style.background='rgb('+r+','+g+','+b+')';
+            fetch('/set?r='+(r*4)+'&g='+(g*4)+'&b='+(b*4));
+        }
+        function setColor(r,g,b){
+            document.getElementById('red').value=r;
+            document.getElementById('green').value=g;
+            document.getElementById('blue').value=b;
+            updateColor();
+            fetch('/mode?m=0');
+        }
+        function setMode(m){
+            fetch('/mode?m='+m);
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+)rawliteral";
     server.send(200, "text/html", page);
   });
 
@@ -1319,7 +1357,7 @@ void setup() {
   });
 
   server.begin();
-  Serial.println("Сервер запущен. IP: " + WiFi.softAPIP().toString());
+  Serial.println("Server started. IP: " + WiFi.softAPIP().toString());
 }
 
 void loop() {
@@ -1375,7 +1413,6 @@ void loop() {
             <div id="reviews" class="main-tab-content">
                 <div class="greeting" id="reviewsGreeting">📺 ОБЗОРЫ И 🛒 ТОВАРЫ</div>
                 
-                <!-- Обзор 1: WORKPRO -->
                 <div class="story" style="margin-bottom: 40px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;" id="review1Title">🔪 Нож WORKPRO</h3>
                     <p id="review1p1">🔥 Удобный ножик с упором на лезвии — мелочь, а как выручает!</p>
@@ -1385,7 +1422,6 @@ void loop() {
                     </div>
                 </div>
                 
-                <!-- Обзор 2: Инструмент -->
                 <div class="story" style="margin-bottom: 40px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;" id="review2Title">🛠️ Инструмент для удаления неровностей</h3>
                     <p id="review2p1">🔧 Универсальный инструмент для резки металла, пластика и сантехники</p>
@@ -1394,7 +1430,6 @@ void loop() {
                     </div>
                 </div>
                 
-                <!-- Обзор 3: Турбозажигалка -->
                 <div class="story" style="margin-bottom: 40px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;" id="review3Title">🔥 Турбозажигалка</h3>
                     <p id="review3p1">⚡ Мощная турбозажигалка с ветрозащитой для термоусадки</p>
@@ -1404,7 +1439,6 @@ void loop() {
                     </div>
                 </div>
                 
-                <!-- Обзор 4: Паяльник -->
                 <div class="story" style="margin-bottom: 40px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;" id="review4Title">🖋️ Паяльник FMCHIP FM03</h3>
                     <p id="review4p1">🔥 Цифровой паяльник 20 Вт, питается от повербанка</p>
@@ -1413,7 +1447,6 @@ void loop() {
                     </div>
                 </div>
                 
-                <!-- Обзор 5: M5 Stick -->
                 <div class="story" style="margin-bottom: 40px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;" id="review5Title">🚀 M5 Stick C Plus 2</h3>
                     <p id="review5p1">🔥 ESP32-компьютер с цветным экраном, аккумулятором и гироскопом</p>
@@ -1489,7 +1522,7 @@ void loop() {
                 comp4: 'Повербанк',
                 comp4desc: 'Для автономного питания',
                 codeTitle1: '📟 ПОЛНЫЙ КОД МЕТЕОСТАНЦИИ',
-                greeting2: '🌈 RGB светодиод + ESP8266',
+                greeting2: '🌈 RGB светодиод + ESP8266 (режим точки доступа)',
                 codeTitle2: '📟 ПОЛНЫЙ СКЕТЧ RGB (КОПИРУЙ В ARDUINO IDE)',
                 greeting3: '🔧 Arduino Uno и Nano',
                 schemeTitle3: '🔌 ПРОЕКТ 1: Мигание светодиодом',
@@ -1550,7 +1583,7 @@ void loop() {
                 comp4: 'Power Bank',
                 comp4desc: 'For autonomous power',
                 codeTitle1: '📟 FULL WEATHER STATION CODE',
-                greeting2: '🌈 RGB LED + ESP8266',
+                greeting2: '🌈 RGB LED + ESP8266 (access point mode)',
                 codeTitle2: '📟 FULL RGB SKETCH (COPY TO ARDUINO IDE)',
                 greeting3: '🔧 Arduino Uno and Nano',
                 schemeTitle3: '🔌 PROJECT 1: LED Blink',
