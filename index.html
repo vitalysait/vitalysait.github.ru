@@ -961,7 +961,7 @@
                     <button class="project-tab-btn active" onclick="openProjectTab('project1')"><span id="projectTab1">📋 1. Метеостанция</span></button>
                     <button class="project-tab-btn" onclick="openProjectTab('project2')"><span id="projectTab2">💡 2. RGB светодиод</span></button>
                     <button class="project-tab-btn" onclick="openProjectTab('project3')"><span id="projectTab3">🔧 3. Arduino Uno/Nano</span></button>
-                    <button class="project-tab-btn" onclick="openProjectTab('project4')"><span id="projectTab4">⚡ 4. СКОРО</span></button>
+                    <button class="project-tab-btn" onclick="openProjectTab('project4')"><span id="projectTab4">🔢 4. МЕМ SIX SEVEN</span></button>
                 </div>
                 
                 <!-- Проект 1 - Метеостанция -->
@@ -1240,9 +1240,85 @@ void loop() {
                     </div>
                 </div>
                 
-                <!-- Проект 2 - RGB светодиод -->
+                <!-- Проект 2 - RGB светодиод (с компонентами и схемой) -->
                 <div id="project2" class="project-content">
                     <div class="greeting" id="greeting2">🌈 RGB светодиод + ESP8266 (режим точки доступа)</div>
+                    
+                    <div class="connection-scheme">
+                        <h2 id="schemeTitle2">🔌 СХЕМА ПОДКЛЮЧЕНИЯ RGB МОДУЛЯ KY-016 (HW-479)</h2>
+                        <div class="scheme-grid">
+                            <div class="scheme-item"><span>⚫</span><strong class="pin-gnd"><span id="rgbPin1">GND → GND</span></strong></div>
+                            <div class="scheme-item"><span>🔴</span><strong class="pin-red"><span id="rgbPin2">R → D1 (GPIO5) + 220 Ом</span></strong></div>
+                            <div class="scheme-item"><span>🟢</span><strong class="pin-green"><span id="rgbPin3">G → D2 (GPIO4) + 220 Ом</span></strong></div>
+                            <div class="scheme-item"><span>🔵</span><strong class="pin-blue"><span id="rgbPin4">B → D3 (GPIO0) + 220 Ом</span></strong></div>
+                        </div>
+                        <p style="text-align: center; margin-top: 15px; color: #ff4757; font-weight: bold;">⚠️ Резисторы 220 Ом обязательны для каждого канала!</p>
+                    </div>
+                    
+                    <h2 style="color: #667eea; margin: 30px 0 20px; text-align: center;" id="componentsTitle2">⚡ КОМПОНЕНТЫ ДЛЯ ПРОЕКТА ⚡</h2>
+                    
+                    <div class="components-grid">
+                        <!-- ESP8266 D1 Mini V2 -->
+                        <div class="component-card">
+                            <div class="component-icon">🔹</div>
+                            <h3>ESP8266 D1 Mini V2</h3>
+                            <p>NodeMcu Lua ESP-12 (CH340) Type-C</p>
+                            <div class="shop-buttons">
+                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=esp8266+d1+mini+v2" target="_blank" class="shop-btn wb">Wildberries</a>
+                                <a href="https://www.ozon.ru/search/?text=esp8266+d1+mini+v2" target="_blank" class="shop-btn ozon">Ozon</a>
+                                <a href="https://aliexpress.ru/wholesale?SearchText=esp8266+d1+mini+v2" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                            </div>
+                        </div>
+                        
+                        <!-- RGB модуль KY-016 (HW-479) -->
+                        <div class="component-card">
+                            <div class="component-icon">🌈</div>
+                            <h3>RGB модуль KY-016 (HW-479)</h3>
+                            <p>Светодиодный модуль для Arduino</p>
+                            <div class="shop-buttons">
+                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=ky-016+arduino" target="_blank" class="shop-btn wb">Wildberries</a>
+                                <a href="https://www.ozon.ru/search/?text=ky-016+arduino" target="_blank" class="shop-btn ozon">Ozon</a>
+                                <a href="https://aliexpress.ru/wholesale?SearchText=ky-016" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Коробка распределительная -->
+                        <div class="component-card">
+                            <div class="component-icon">📦</div>
+                            <h3>Коробка распределительная</h3>
+                            <p>65x65x50 мм, IP54, распаячная</p>
+                            <div class="shop-buttons">
+                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=коробка+распределительная+65x65" target="_blank" class="shop-btn wb">Wildberries</a>
+                                <a href="https://www.ozon.ru/search/?text=коробка+распределительная+65x65" target="_blank" class="shop-btn ozon">Ozon</a>
+                                <a href="https://aliexpress.ru/wholesale?SearchText=junction+box+65x65" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Резисторы 220 Ом -->
+                        <div class="component-card">
+                            <div class="component-icon">⚡</div>
+                            <h3>Резисторы 220 Ом</h3>
+                            <p>3 штуки для каждого канала</p>
+                            <div class="shop-buttons">
+                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=резисторы+220+ом" target="_blank" class="shop-btn wb">Wildberries</a>
+                                <a href="https://www.ozon.ru/search/?text=резисторы+220+ом" target="_blank" class="shop-btn ozon">Ozon</a>
+                                <a href="https://aliexpress.ru/wholesale?SearchText=220+ohm+resistor" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Провода -->
+                        <div class="component-card">
+                            <div class="component-icon">🔌</div>
+                            <h3>Соединительные провода</h3>
+                            <p>Папа-мама, мама-мама</p>
+                            <div class="shop-buttons">
+                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=провода+для+arduino" target="_blank" class="shop-btn wb">Wildberries</a>
+                                <a href="https://www.ozon.ru/search/?text=провода+для+arduino" target="_blank" class="shop-btn ozon">Ozon</a>
+                                <a href="https://aliexpress.ru/wholesale?SearchText=dupont+cable" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="code-section">
                         <div class="code-header">
                             <h2 id="codeTitle2">📟 ПОЛНЫЙ СКЕТЧ RGB (КОПИРУЙ В ARDUINO IDE)</h2>
@@ -1401,10 +1477,123 @@ void loop() {
                     </div>
                 </div>
                 
-                <!-- Проект 4 - СКОРО -->
+                <!-- Проект 4 - МЕМ SIX SEVEN НА ДИСПЛЕЕ (да, я идиот) -->
                 <div id="project4" class="project-content">
-                    <div class="big-soon">
-                        <h2 id="soonText">СКОРО...</h2>
+                    <div class="greeting" id="greeting4">🔢 МЕМ SIX SEVEN НА ДИСПЛЕЕ (да, я идиот)</div>
+                    
+                    <div class="connection-scheme">
+                        <h2 id="schemeTitle4">🔌 СХЕМА ПОДКЛЮЧЕНИЯ LCD1602 I2C К ARDUINO UNO</h2>
+                        <div class="scheme-grid">
+                            <div class="scheme-item"><span>🔴</span><strong class="pin-red"><span id="lcdPin1">VCC → 5V</span></strong></div>
+                            <div class="scheme-item"><span>⚫</span><strong class="pin-gnd"><span id="lcdPin2">GND → GND</span></strong></div>
+                            <div class="scheme-item"><span>🟡</span><strong><span id="lcdPin3">SDA → A4</span></strong></div>
+                            <div class="scheme-item"><span>🟢</span><strong><span id="lcdPin4">SCL → A5</span></strong></div>
+                        </div>
+                        <p style="text-align: center; margin-top: 15px; color: #ff4757; font-weight: bold;">⚠️ Для работы нужна библиотека LiquidCrystal_I2C</p>
+                    </div>
+                    
+                    <h2 style="color: #667eea; margin: 30px 0 20px; text-align: center;" id="componentsTitle4">⚡ КОМПОНЕНТЫ ДЛЯ ПРОЕКТА ⚡</h2>
+                    
+                    <div class="components-grid">
+                        <!-- Arduino Uno R3 -->
+                        <div class="component-card">
+                            <div class="component-icon">🔧</div>
+                            <h3>Arduino Uno R3</h3>
+                            <p>Оригинальный или совместимый, USB кабель</p>
+                            <div class="shop-buttons">
+                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=arduino+uno" target="_blank" class="shop-btn wb">Wildberries</a>
+                                <a href="https://www.ozon.ru/search/?text=arduino+uno" target="_blank" class="shop-btn ozon">Ozon</a>
+                                <a href="https://aliexpress.ru/wholesale?SearchText=arduino+uno" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                            </div>
+                        </div>
+                        
+                        <!-- LCD1602 I2C -->
+                        <div class="component-card">
+                            <div class="component-icon">📟</div>
+                            <h3>LCD1602 I2C (синий экран)</h3>
+                            <p>16x2 символов, с I2C адаптером</p>
+                            <div class="shop-buttons">
+                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=lcd1602+i2c" target="_blank" class="shop-btn wb">Wildberries</a>
+                                <a href="https://www.ozon.ru/search/?text=lcd1602+i2c" target="_blank" class="shop-btn ozon">Ozon</a>
+                                <a href="https://aliexpress.ru/wholesale?SearchText=lcd1602+i2c" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Провода DuPont -->
+                        <div class="component-card">
+                            <div class="component-icon">🔌</div>
+                            <h3>Провода DuPont</h3>
+                            <p>Папа-папа, 4 штуки для подключения</p>
+                            <div class="shop-buttons">
+                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=провода+dupont" target="_blank" class="shop-btn wb">Wildberries</a>
+                                <a href="https://www.ozon.ru/search/?text=провода+dupont" target="_blank" class="shop-btn ozon">Ozon</a>
+                                <a href="https://aliexpress.ru/wholesale?SearchText=dupont+cable" target="_blank" class="shop-btn aliexpress">AliExpress</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="code-section">
+                        <div class="code-header">
+                            <h2 id="codeTitle4">📟 КОД: БОЛЬШИЕ ЦИФРЫ 6 И 7 НА LCD</h2>
+                            <button class="copy-btn" onclick="copyCode('code4')" id="copyBtn4">📋 COPY</button>
+                        </div>
+                        <div class="code-block">
+                            <pre id="code4">
+#include &lt;Wire.h&gt;
+#include &lt;LiquidCrystal_I2C.h&gt;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+// Массивы для создания кастомных сегментов больших цифр
+byte bar1[8] = {B11111, B11111, B00000, B00000, B00000, B00000, B00000, B00000};
+byte bar2[8] = {B11111, B11111, B00000, B00000, B00000, B11111, B11111, B11111};
+byte bar3[8] = {B00000, B00000, B00000, B00000, B00000, B11111, B11111, B11111};
+byte bar4[8] = {B11111, B11111, B11111, B11111, B11111, B11111, B11111, B11111};
+byte bar5[8] = {B00000, B00000, B00000, B00000, B00000, B00000, B11111, B11111};
+byte bar6[8] = {B11111, B11111, B11111, B00000, B00000, B00000, B00000, B00000};
+byte bar7[8] = {B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000};
+byte bar8[8] = {B11111, B11111, B11111, B11111, B11111, B00000, B00000, B00000};
+
+// Функция отрисовки большой цифры 6
+void drawSix(int x) {
+  lcd.setCursor(x, 0); lcd.write(4); lcd.write(2); lcd.write(2);
+  lcd.setCursor(x, 1); lcd.write(4); lcd.write(3); lcd.write(4);
+}
+
+// Функция отрисовки большой цифры 7
+void drawSeven(int x) {
+  lcd.setCursor(x, 0); lcd.write(1); lcd.write(1); lcd.write(4);
+  lcd.setCursor(x, 1); lcd.write(7); lcd.write(7); lcd.write(4);
+}
+
+void setup() {
+  lcd.init();
+  lcd.backlight();
+
+  // Загружаем кастомные символы в память дисплея (максимум 8 штук)
+  lcd.createChar(1, bar1);
+  lcd.createChar(2, bar2);
+  lcd.createChar(3, bar3);
+  lcd.createChar(4, bar4);
+  lcd.createChar(5, bar5);
+  lcd.createChar(6, bar6);
+  lcd.createChar(7, bar7);
+  lcd.createChar(8, bar8);
+
+  lcd.clear();
+
+  // Рисуем цифру 6, начиная с 5-го столбца
+  drawSix(5);
+  
+  // Рисуем цифру 7, начиная с 9-го столбца (оставляем пропуск между ними)
+  drawSeven(9);
+}
+
+void loop() {
+  // В loop ничего не нужно, так как число статичное
+}
+                            </pre>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1500,12 +1689,12 @@ void loop() {
                 projectTab1: '📋 1. Метеостанция',
                 projectTab2: '💡 2. RGB светодиод',
                 projectTab3: '🔧 3. Arduino Uno/Nano',
-                projectTab4: '⚡ 4. СКОРО',
+                projectTab4: '🔢 4. МЕМ SIX SEVEN',
                 greeting1: '👋 ВСЕМ ПРИВЕТ!',
-                story1p1: '🔥 Как и обещал, расскажу про проект метеостанция. Взял ESP8266, потом DHT22.',
-                story1p2: '🤖 Бот показывает температуру и влажность. Сделал его приватным.',
+                story1p1: '🔥 Как и обещал, расскажу про проект метеостанция. Взял ESP8266, потом DHT22. Решил сначала сделать сайт - сделал, мне не понравилось. Потом создал бота в Telegram, делал его 2 дня.',
+                story1p2: '🤖 Бот показывает температуру и влажность. Сделал его приватным. Прошил ESP, подключил к повербанку, взял коробку, вырезал отверстия, просунул датчик - и понеслась!',
                 highlight1: '✨ СТАЛ ДОБАВЛЯТЬ В БОТА ПРИКОЛЫ ✨',
-                story2: '📱 Создавал его через @BotFather, написал код в Arduino IDE.',
+                story2: '📱 Создавал его через @BotFather, написал код в Arduino IDE. Код будет ниже. Настолько понравился проект, что решил заказать печать у @Bolodechka. Пока что думаю...',
                 signature: 'АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ, 25.02.2026 21:34',
                 schemeTitle1: '🔌 СХЕМА ПОДКЛЮЧЕНИЯ DHT22',
                 pin1: 'VCC → 3.3V',
@@ -1523,6 +1712,12 @@ void loop() {
                 comp4desc: 'Для автономного питания',
                 codeTitle1: '📟 ПОЛНЫЙ КОД МЕТЕОСТАНЦИИ',
                 greeting2: '🌈 RGB светодиод + ESP8266 (режим точки доступа)',
+                schemeTitle2: '🔌 СХЕМА ПОДКЛЮЧЕНИЯ RGB МОДУЛЯ KY-016 (HW-479)',
+                rgbPin1: 'GND → GND',
+                rgbPin2: 'R → D1 (GPIO5) + 220 Ом',
+                rgbPin3: 'G → D2 (GPIO4) + 220 Ом',
+                rgbPin4: 'B → D3 (GPIO0) + 220 Ом',
+                componentsTitle2: '⚡ КОМПОНЕНТЫ ДЛЯ ПРОЕКТА ⚡',
                 codeTitle2: '📟 ПОЛНЫЙ СКЕТЧ RGB (КОПИРУЙ В ARDUINO IDE)',
                 greeting3: '🔧 Arduino Uno и Nano',
                 schemeTitle3: '🔌 ПРОЕКТ 1: Мигание светодиодом',
@@ -1530,6 +1725,14 @@ void loop() {
                 blinkPin2: 'LED - → GND',
                 blinkPin3: 'Резистор 220 Ом',
                 codeTitle3: '📟 КОД Blink',
+                greeting4: '🔢 МЕМ SIX SEVEN НА ДИСПЛЕЕ (да, я идиот)',
+                schemeTitle4: '🔌 СХЕМА ПОДКЛЮЧЕНИЯ LCD1602 I2C К ARDUINO UNO',
+                lcdPin1: 'VCC → 5V',
+                lcdPin2: 'GND → GND',
+                lcdPin3: 'SDA → A4',
+                lcdPin4: 'SCL → A5',
+                componentsTitle4: '⚡ КОМПОНЕНТЫ ДЛЯ ПРОЕКТА ⚡',
+                codeTitle4: '📟 КОД: БОЛЬШИЕ ЦИФРЫ 6 И 7 НА LCD',
                 soonText: 'СКОРО...',
                 reviewsGreeting: '📺 ОБЗОРЫ И 🛒 ТОВАРЫ',
                 review1Title: '🔪 Нож WORKPRO',
@@ -1561,7 +1764,7 @@ void loop() {
                 projectTab1: '📋 1. Weather Station',
                 projectTab2: '💡 2. RGB LED',
                 projectTab3: '🔧 3. Arduino Uno/Nano',
-                projectTab4: '⚡ 4. SOON',
+                projectTab4: '🔢 4. MEME SIX SEVEN',
                 greeting1: '👋 HELLO EVERYONE!',
                 story1p1: '🔥 As promised, I\'ll tell you about the weather station project.',
                 story1p2: '🤖 The bot shows temperature and humidity.',
@@ -1584,6 +1787,12 @@ void loop() {
                 comp4desc: 'For autonomous power',
                 codeTitle1: '📟 FULL WEATHER STATION CODE',
                 greeting2: '🌈 RGB LED + ESP8266 (access point mode)',
+                schemeTitle2: '🔌 RGB MODULE KY-016 (HW-479) CONNECTION',
+                rgbPin1: 'GND → GND',
+                rgbPin2: 'R → D1 (GPIO5) + 220Ω',
+                rgbPin3: 'G → D2 (GPIO4) + 220Ω',
+                rgbPin4: 'B → D3 (GPIO0) + 220Ω',
+                componentsTitle2: '⚡ PROJECT COMPONENTS ⚡',
                 codeTitle2: '📟 FULL RGB SKETCH (COPY TO ARDUINO IDE)',
                 greeting3: '🔧 Arduino Uno and Nano',
                 schemeTitle3: '🔌 PROJECT 1: LED Blink',
@@ -1591,6 +1800,14 @@ void loop() {
                 blinkPin2: 'LED - → GND',
                 blinkPin3: '220Ω Resistor',
                 codeTitle3: '📟 Blink CODE',
+                greeting4: '🔢 MEME SIX SEVEN ON DISPLAY (yes, I\'m an idiot)',
+                schemeTitle4: '🔌 LCD1602 I2C TO ARDUINO UNO CONNECTION',
+                lcdPin1: 'VCC → 5V',
+                lcdPin2: 'GND → GND',
+                lcdPin3: 'SDA → A4',
+                lcdPin4: 'SCL → A5',
+                componentsTitle4: '⚡ PROJECT COMPONENTS ⚡',
+                codeTitle4: '📟 CODE: BIG DIGITS 6 AND 7 ON LCD',
                 soonText: 'SOON...',
                 reviewsGreeting: '📺 REVIEWS AND 🛒 SHOP',
                 review1Title: '🔪 WORKPRO Knife',
@@ -1654,6 +1871,12 @@ void loop() {
             document.getElementById('comp4desc').textContent = t.comp4desc;
             document.getElementById('codeTitle1').textContent = t.codeTitle1;
             document.getElementById('greeting2').textContent = t.greeting2;
+            document.getElementById('schemeTitle2').textContent = t.schemeTitle2;
+            document.getElementById('rgbPin1').textContent = t.rgbPin1;
+            document.getElementById('rgbPin2').textContent = t.rgbPin2;
+            document.getElementById('rgbPin3').textContent = t.rgbPin3;
+            document.getElementById('rgbPin4').textContent = t.rgbPin4;
+            document.getElementById('componentsTitle2').textContent = t.componentsTitle2;
             document.getElementById('codeTitle2').textContent = t.codeTitle2;
             document.getElementById('greeting3').textContent = t.greeting3;
             document.getElementById('schemeTitle3').textContent = t.schemeTitle3;
@@ -1661,6 +1884,14 @@ void loop() {
             document.getElementById('blinkPin2').textContent = t.blinkPin2;
             document.getElementById('blinkPin3').textContent = t.blinkPin3;
             document.getElementById('codeTitle3').textContent = t.codeTitle3;
+            document.getElementById('greeting4').textContent = t.greeting4;
+            document.getElementById('schemeTitle4').textContent = t.schemeTitle4;
+            document.getElementById('lcdPin1').textContent = t.lcdPin1;
+            document.getElementById('lcdPin2').textContent = t.lcdPin2;
+            document.getElementById('lcdPin3').textContent = t.lcdPin3;
+            document.getElementById('lcdPin4').textContent = t.lcdPin4;
+            document.getElementById('componentsTitle4').textContent = t.componentsTitle4;
+            document.getElementById('codeTitle4').textContent = t.codeTitle4;
             document.getElementById('soonText').textContent = t.soonText;
             document.getElementById('reviewsGreeting').textContent = t.reviewsGreeting;
             document.getElementById('review1Title').textContent = t.review1Title;
@@ -1680,6 +1911,7 @@ void loop() {
             document.getElementById('copyBtn1').innerHTML = t.copyBtn;
             document.getElementById('copyBtn2').innerHTML = t.copyBtn;
             document.getElementById('copyBtn3').innerHTML = t.copyBtn;
+            document.getElementById('copyBtn4').innerHTML = t.copyBtn;
         }
         
         function toggleTheme() {
