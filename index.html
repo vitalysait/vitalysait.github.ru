@@ -3,2005 +3,642 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ардуино проекты и паяльники</title>
-    
-    <!-- Яндекс.Метрика -->
-    <script type="text/javascript" >
-        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-     
-        ym(107081093, "init", {
-             clickmap:true,
-             trackLinks:true,
-             accurateTrackBounce:true,
-             webvisor:true
-        });
-    </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/107081093" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    
+    <title>Arduino & ESP Projects</title>
     <style>
+        :root {
+            --bg-color: #0a0b10;
+            --container-bg: #121420;
+            --card-bg: #1a1d30;
+            --text-color: #ffffff;
+            --text-muted: #8b9bb4;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff007f;
+            --accent-green: #39ff14;
+            --border-color: #262b44;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
             min-height: 100vh;
-            padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transition: all 0.3s;
-            --base-font-size: 18px;
-            font-size: var(--base-font-size);
-            position: relative;
         }
-        
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc0IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4wNCIgLz48L3N2Zz4=');
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        body.dark-theme {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }
-        
-        body.dark-theme .container {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-        
-        body.dark-theme .story,
-        body.dark-theme .component-card,
-        body.dark-theme .code-section,
-        body.dark-theme .connection-scheme,
-        body.dark-theme .scheme-item {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-color: rgba(255, 255, 255, 0.15);
-            color: #f0f0f0;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-        
-        .control-panel {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 12px 18px;
-            border-radius: 60px;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-        }
-        
-        .control-btn {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .control-btn:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.4);
-            border-color: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-        
-        .language-btn {
-            width: auto;
-            padding: 0 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            gap: 5px;
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        .font-size-control {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: white;
-            padding: 0 10px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 40px;
-            padding: 5px 10px;
-        }
-        
-        .font-size-slider {
-            width: 100px;
-            height: 5px;
-            -webkit-appearance: none;
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 5px;
-            outline: none;
-        }
-        
-        .font-size-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            background: white;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
-        .font-size-btn {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: none;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
+
         .container {
             width: 100%;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 0;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
-            animation: slideIn 0.5s ease-out;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            position: relative;
-            z-index: 2;
+            max-width: 1000px;
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        
-        @keyframes slideIn {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .tg-top-banner {
-            background: linear-gradient(135deg, rgba(0, 136, 204, 0.8), rgba(0, 95, 140, 0.8));
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: white;
+
+        /* Шапка и кнопки подписки */
+        .header {
             text-align: center;
-            padding: 18px;
-            font-size: 1.3em;
-            font-weight: bold;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+            position: relative;
         }
-        
-        .tg-top-banner .banner-links {
+
+        .lang-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .lang-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-color);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .social-buttons {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 30px;
+            gap: 15px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        
-        .tg-top-banner a {
-            color: white;
+
+        .btn-social {
+            padding: 10px 20px;
+            border-radius: 8px;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: opacity 0.2s;
+            font-weight: bold;
+            font-size: 0.9em;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        
-        .tg-top-banner a:hover {
-            opacity: 0.9;
-            text-decoration: underline;
-        }
-        
-        .tg-top-banner .separator {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 1.5em;
-            line-height: 1;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+
+        .btn-youtube {
+            background-color: #ff0000;
             color: white;
-            padding: 45px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
-        .header h1 {
-            font-size: 2.8em;
+
+        .btn-telegram {
+            background-color: #0088cc;
+            color: white;
+        }
+
+        .btn-social:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            font-size: 2em;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
             margin-bottom: 10px;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        
-        .badge {
-            background: rgba(255, 71, 87, 0.8);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: white;
-            padding: 8px 25px;
-            border-radius: 40px;
-            font-size: 1em;
-            display: inline-block;
-            margin-top: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1em;
         }
-        
-        .content {
-            padding: 40px;
-        }
-        
-        /* Главные вкладки сайта */
+
+        /* Навигация (Вкладки) */
         .main-tabs {
             display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 15px;
-            border-radius: 60px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
         }
-        
+
         .main-tab-btn {
-            padding: 18px 35px;
+            background: transparent;
             border: none;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 50px;
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
+            color: var(--text-muted);
+            padding: 10px 20px;
+            font-size: 1.05em;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            min-width: 200px;
+            transition: color 0.3s;
+            position: relative;
         }
-        
+
         .main-tab-btn:hover {
-            background: rgba(255, 255, 255, 0.5);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            color: var(--text-color);
         }
-        
+
         .main-tab-btn.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border-color: white;
+            color: var(--accent-cyan);
         }
-        
+
+        .main-tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-cyan);
+            box-shadow: 0 0 8px var(--accent-cyan);
+        }
+
+        /* Контент вкладок */
         .main-tab-content {
             display: none;
-            animation: fadeIn 0.5s;
         }
-        
+
         .main-tab-content.active {
             display: block;
+            animation: fadeIn 0.4s ease;
         }
-        
-        /* Стили для видео */
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            max-width: 100%;
-            margin: 30px 0;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            background: linear-gradient(135deg, #667eea20, #764ba220);
-        }
-        
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 20px;
-        }
-        
-        .video-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #667eea30, #764ba230);
-            backdrop-filter: blur(5px);
-            border-radius: 20px;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            pointer-events: none;
-        }
-        
-        .video-placeholder span {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-        
-        .video-placeholder p {
-            font-size: 1.2em;
-            max-width: 80%;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin: 35px 0;
-        }
-        
-        .video-card {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s;
-        }
-        
-        .video-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 45px rgba(102, 126, 234, 0.25);
-        }
-        
-        .video-card .video-container {
-            margin: 0 0 15px 0;
-        }
-        
-        .video-card h3 {
-            color: #667eea;
-            font-size: 1.2em;
-            margin: 0;
-            text-align: center;
-        }
-        
-        /* Внутренние табы проектов */
-        .project-tabs {
-            display: flex;
-            gap: 10px;
-            margin: 30px 0;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(12px);
-            padding: 12px;
-            border-radius: 60px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            flex-wrap: wrap;
-        }
-        
-        .project-tab-btn {
-            flex: 1;
-            padding: 15px 25px;
-            border: none;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(8px);
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #333;
-            cursor: pointer;
-            transition: all 0.3s;
-            min-width: 150px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            white-space: nowrap;
-        }
-        
-        .project-tab-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-        
-        .project-tab-btn.active {
-            background: rgba(102, 126, 234, 0.7);
-            color: white;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .project-content {
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-        
-        .project-content.active {
-            display: block;
-        }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .greeting {
-            background: linear-gradient(135deg, rgba(240, 147, 251, 0.8), rgba(245, 87, 108, 0.8));
-            backdrop-filter: blur(12px);
-            color: white;
-            padding: 30px;
-            border-radius: 30px;
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 1.4em;
-            animation: pulse 2s infinite;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            background: rgba(38, 43, 68, 0.4);
+            border-left: 4px solid var(--accent-pink);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 25px;
         }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-        
-        .story {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(12px);
-            padding: 35px;
-            border-radius: 30px;
-            margin-bottom: 30px;
-            border-left: 8px solid rgba(102, 126, 234, 0.8);
-            line-height: 2;
-            font-size: 1.2em;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-        
-        .story p {
-            margin-bottom: 20px;
-        }
-        
-        .story ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-            line-height: 1.8;
-        }
-        
-        .story li {
+
+        .greeting h2 {
+            font-size: 1.3em;
             margin-bottom: 5px;
         }
-        
-        .story a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: bold;
+
+        .greeting p {
+            color: var(--text-muted);
+            font-size: 0.95em;
         }
-        
-        .story a:hover {
-            text-decoration: underline;
-        }
-        
-        .highlight {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
-            backdrop-filter: blur(8px);
-            color: white;
-            padding: 15px 35px;
-            border-radius: 60px;
-            display: inline-block;
-            margin: 15px 0;
-            font-weight: bold;
-            font-size: 1.3em;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
+
+        /* Сетка проектов и обзоров товаров */
         .components-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin: 35px 0;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
-        
+
         .component-card {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(12px);
-            border-radius: 30px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s;
-            text-align: center;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: border-color 0.3s, transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        
+
         .component-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 45px rgba(102, 126, 234, 0.25);
-            background: rgba(255, 255, 255, 0.75);
-            border-color: rgba(255, 255, 255, 0.5);
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
         }
-        
-        .component-card h3 {
-            color: #667eea;
-            font-size: 1.6em;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 5px rgba(255,255,255,0.3);
-        }
-        
-        .component-card p {
-            margin-bottom: 15px;
-            font-size: 1em;
-        }
-        
+
         .component-icon {
-            font-size: 3em;
+            font-size: 2em;
             margin-bottom: 15px;
         }
-        
+
+        .component-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .component-card p {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        /* Кнопки магазинов */
         .shop-buttons {
             display: flex;
             gap: 10px;
-            justify-content: center;
             margin-top: 20px;
-            flex-wrap: wrap;
         }
-        
+
         .shop-btn {
-            padding: 10px 20px;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.95em;
-            color: white;
-            transition: all 0.3s;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            white-space: nowrap;
-        }
-        
-        .shop-btn:hover {
-            transform: scale(1.05);
-            background: rgba(0, 0, 0, 0.4);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-        
-        .wb { background: rgba(203, 17, 171, 0.7); }
-        .ozon { background: rgba(0, 91, 255, 0.7); }
-        .aliexpress { background: rgba(255, 106, 0, 0.7); }
-        
-        .code-section {
-            background: rgba(30, 30, 47, 0.7);
-            backdrop-filter: blur(15px);
-            border-radius: 30px;
-            padding: 35px;
-            margin-bottom: 35px;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .code-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .code-header h2 {
-            color: white;
-            font-size: 1.8em;
-            text-align: center;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            margin: 0;
             flex: 1;
-        }
-        
-        .copy-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(5px);
-        }
-        
-        .copy-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .copy-btn.copied {
-            background: #4CAF50;
-            border-color: white;
-        }
-        
-        .code-block {
-            background: rgba(45, 45, 58, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            overflow-x: auto;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-        
-        pre {
-            margin: 0;
-            color: #e6e6e6;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        
-        .connection-scheme {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(12px);
-            padding: 35px;
-            border-radius: 30px;
-            margin: 30px 0;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-        
-        .connection-scheme h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 2em;
+            padding: 8px 12px;
+            border-radius: 6px;
             text-align: center;
-        }
-        
-        .scheme-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .scheme-item {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(8px);
-            padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            font-size: 1.2em;
-            border-left: 4px solid rgba(102, 126, 234, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .pin-red { color: #ff4444; font-weight: bold; }
-        .pin-green { color: #44ff44; font-weight: bold; }
-        .pin-blue { color: #4444ff; font-weight: bold; }
-        .pin-gnd { color: #666; font-weight: bold; }
-        
-        .big-soon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 400px;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(15px);
-            border-radius: 40px;
-            margin: 30px 0;
-            border: 3px dashed rgba(102, 126, 234, 0.6);
-            animation: pulse 2s infinite;
-        }
-        
-        .big-soon h2 {
-            font-size: 5em;
-            color: #667eea;
-            text-shadow: 5px 5px 0 rgba(102, 126, 234, 0.3);
-            letter-spacing: 10px;
-        }
-        
-        /* Рекламный блок Волна */
-        .volna-ad-block {
-            max-width: 100%;
-            margin: 0 0 40px 0;
-            font-family: inherit;
-        }
-        .volna-banner {
-            background: linear-gradient(145deg, #ffffff, #f8faff);
-            border-radius: 32px;
-            padding: 28px 24px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(102, 126, 234, 0.2);
-        }
-        .volna-content {
-            flex: 2;
-            min-width: 180px;
-        }
-        .volna-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 8px;
-        }
-        .volna-tagline {
-            font-size: 1rem;
-            color: #4b5563;
-            margin-bottom: 12px;
-        }
-        .volna-description {
-            font-size: 0.9rem;
-            color: #6c727f;
-        }
-        .volna-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            color: white;
             text-decoration: none;
-            padding: 12px 28px;
-            border-radius: 60px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(59,130,246,0.25);
-            white-space: nowrap;
-        }
-        .volna-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(59,130,246,0.35);
-            background: linear-gradient(135deg, #2563eb, #7c3aed);
-        }
-        .volna-arrow {
-            transition: transform 0.2s;
-        }
-        .volna-btn:hover .volna-arrow {
-            transform: translateX(4px);
-        }
-        @media (max-width: 640px) {
-            .volna-banner {
-                flex-direction: column;
-                text-align: center;
-            }
-            .volna-title { font-size: 1.6rem; }
-            .volna-btn { padding: 10px 24px; }
-        }
-        
-        .footer {
-            background: rgba(248, 249, 250, 0.6);
-            backdrop-filter: blur(12px);
-            padding: 35px;
-            text-align: center;
-            border-top: 1px solid rgba(102, 126, 234, 0.4);
-        }
-        
-        .footer .username {
-            color: #667eea;
             font-weight: bold;
-            font-size: 1.3em;
+            font-size: 0.85em;
+            color: #fff;
+            transition: opacity 0.2s;
         }
-        
-        .copy-notification {
+
+        .shop-btn:hover {
+            opacity: 0.9;
+        }
+
+        .ozon { background-color: #005bff; }
+        .aliexpress { background-color: #ff4747; }
+        .wb { background-color: #9c27b0; }
+
+        /* Блок кода (для вкладки Проекты) */
+        .code-block-container {
+            margin-top: 15px;
+            background: #07080c;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: #161925;
+            padding: 8px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .code-lang {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        .btn-copy {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            font-size: 0.75em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-copy:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        pre {
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85em;
+            color: #39ff14;
+            text-align: left;
+        }
+
+        /* Уведомление о копировании */
+        .notification {
             position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 1.1em;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent-green);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 8px;
             font-weight: bold;
-            z-index: 2000;
-            transition: transform 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,255,0,0.3);
+            display: none;
+            animation: slideUp 0.3s ease;
+            z-index: 1000;
         }
-        
-        .copy-notification.show {
-            transform: translateX(-50%) translateY(0);
-        }
-        
-        @media (max-width: 768px) {
-            .control-panel { right: 10px; top: 10px; padding: 8px 12px; }
-            .control-btn { width: 40px; height: 40px; font-size: 18px; }
-            .language-btn { padding: 0 12px; font-size: 12px; }
-            .font-size-control { padding: 3px 8px; }
-            .font-size-slider { width: 70px; }
-            .header h1 { font-size: 1.8em; }
-            .header { padding: 25px; }
-            .content { padding: 20px; }
-            .main-tab-btn { padding: 12px 20px; font-size: 1.1em; min-width: 120px; }
-            .project-tabs { flex-direction: column; gap: 5px; padding: 8px; }
-            .project-tab-btn { min-width: 100%; white-space: normal; padding: 12px; font-size: 1em; }
-            .greeting { padding: 20px; font-size: 1.2em; }
-            .story { padding: 20px; font-size: 1em; }
-            .components-grid { grid-template-columns: 1fr; gap: 15px; }
-            .component-card { padding: 20px; }
-            .component-card h3 { font-size: 1.4em; }
-            .shop-buttons { flex-direction: column; gap: 5px; }
-            .shop-btn { white-space: normal; text-align: center; }
-            .code-section { padding: 20px; }
-            .code-header h2 { font-size: 1.4em; }
-            .copy-btn { padding: 8px 15px; font-size: 0.9em; }
-            .connection-scheme { padding: 20px; }
-            .connection-scheme h2 { font-size: 1.6em; }
-            .scheme-grid { grid-template-columns: 1fr; gap: 10px; }
-            .scheme-item { padding: 15px; font-size: 1em; }
-            .big-soon { min-height: 250px; }
-            .big-soon h2 { font-size: 3em; letter-spacing: 5px; }
-            .footer { padding: 20px; }
-            .footer .username { font-size: 1.1em; }
-            .tg-top-banner .banner-links { gap: 15px; }
-            .tg-top-banner .separator { display: none; }
-            .video-grid { grid-template-columns: 1fr; }
-            .video-placeholder p { font-size: 1em; }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
-<body style="--base-font-size: 18px">
-    <div class="control-panel">
-        <button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
-        <button class="control-btn language-btn" onclick="toggleLanguage()" id="langBtn">🇬🇧 English</button>
-        <div class="font-size-control">
-            <button class="font-size-btn" onclick="changeFontSize(-2)">−</button>
-            <input type="range" min="12" max="32" value="18" class="font-size-slider" id="fontSizeSlider" oninput="updateFontSize(this.value)">
-            <span id="fontSizeValue">18px</span>
-            <button class="font-size-btn" onclick="changeFontSize(2)">+</button>
-        </div>
-    </div>
+<body>
+
+<div class="container">
     
-    <div class="copy-notification" id="copyNotification">📋 Скопировано!</div>
-    
-    <div class="container">
-        <div class="tg-top-banner">
-            <div class="banner-links">
-                <a href="http://www.youtube.com/@ARDUINOESPPROJECT" target="_blank">
-                    <span>▶️</span> <span id="subscribeYoutube">ПОДПИШИСЬ: ARDUINO ESPPROJECT</span> <span>🎥</span>
-                </a>
-                <span class="separator">|</span>
-                <a href="https://t.me/PROJECTARDUINOUNO" target="_blank">
-                    <span>📱</span> <span id="subscribeTelegram">ПОДПИШИСЬ: АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ</span> <span>🔧</span>
-                </a>
-            </div>
+    <div class="header">
+        <button class="lang-btn" onclick="toggleLanguage()" id="langBtn">🇬🇧 English</button>
+        
+        <div class="social-buttons">
+            <a href="https://youtube.com/" target="_blank" class="btn-social btn-youtube" id="subYt">ПОДПИШИСЬ: ARDUINO ESPPROJECT</a>
+            <a href="https://t.me/" target="_blank" class="btn-social btn-telegram" id="subTg">ПОДПИШИСЬ: АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ</a>
         </div>
-        
-        <div class="header">
-            <h1 id="mainTitle">🔧 АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ 🔧</h1>
-            <p id="mainDesc">Метеостанция, RGB светодиод и другие проекты</p>
-            <span class="badge" id="badge">2026</span>
-        </div>
-        
-        <div class="content">
-            <div class="main-tabs">
-                <button class="main-tab-btn active" onclick="openMainTab('projects')" id="mainTabProjects">🔧 Проекты</button>
-                <button class="main-tab-btn" onclick="openMainTab('reviews')" id="mainTabReviews">📺 Обзоры + 🛒 Товары</button>
-                <button class="main-tab-btn" onclick="openMainTab('videos')" id="mainTabVideos">📺 Видео</button>
-            </div>
-            
-            <!-- РЕКЛАМНЫЙ БЛОК ВОЛНЫ -->
-            <div class="volna-ad-block">
-                <div class="volna-banner">
-                    <div class="volna-content">
-                        <div class="volna-title">🌊 Волна</div>
-                        <div class="volna-tagline">Будь на своей волне. Общайся. Создавай.</div>
-                        <div class="volna-description">Новая соцсеть для творчества и общения. Регистрируйся, находи друзей, делись идеями.</div>
-                    </div>
-                    <div class="volna-button">
-                        <a href="https://volna-seven.vercel.app/" target="_blank" class="volna-btn" rel="noopener noreferrer">
-                            <span>Присоединиться</span>
-                            <svg class="volna-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- ВКЛАДКА ПРОЕКТЫ -->
-            <div id="projects" class="main-tab-content active">
-                <div class="project-tabs">
-                    <button class="project-tab-btn active" onclick="openProjectTab('project1')"><span id="projectTab1">📋 1. Метеостанция</span></button>
-                    <button class="project-tab-btn" onclick="openProjectTab('project2')"><span id="projectTab2">💡 2. RGB светодиод</span></button>
-                    <button class="project-tab-btn" onclick="openProjectTab('project3')"><span id="projectTab3">🔧 3. Arduino Uno/Nano</span></button>
-                    <button class="project-tab-btn" onclick="openProjectTab('project4')"><span id="projectTab4">🔢 4. МЕМ SIX SEVEN</span></button>
-                </div>
-                
-                <!-- Проект 1 - Метеостанция -->
-                <div id="project1" class="project-content active">
-                    <div class="greeting" id="greeting1">👋 ВСЕМ ПРИВЕТ!</div>
-                    
-                    <div class="story" id="story1">
-                        <p id="story1p1">🔥 Как и обещал, расскажу про проект метеостанция. Взял ESP8266, потом DHT22. Решил сначала сделать сайт - сделал, мне не понравилось. Потом создал бота в Telegram, делал его 2 дня.</p>
-                        <p id="story1p2">🤖 Бот показывает температуру и влажность. Сделал его приватным. Прошил ESP, подключил к повербанку, взял коробку, вырезал отверстия, просунул датчик - и понеслась!</p>
-                        <div style="text-align: center;">
-                            <span class="highlight" id="highlight1">✨ СТАЛ ДОБАВЛЯТЬ В БОТА ПРИКОЛЫ ✨</span>
-                        </div>
-                        <p id="story2">📱 Создавал его через @BotFather, написал код в Arduino IDE. Код будет ниже. Настолько понравился проект, что решил заказать печать у @Bolodechka. Пока что думаю...</p>
-                        <p style="text-align: right; font-style: italic; margin-top: 30px;" id="signature">АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ, 25.02.2026 21:34</p>
-                    </div>
-                    
-                    <div class="connection-scheme">
-                        <h2 id="schemeTitle1">🔌 СХЕМА ПОДКЛЮЧЕНИЯ DHT22</h2>
-                        <div class="scheme-grid">
-                            <div class="scheme-item"><span>🔴</span><strong class="pin-red"><span id="pin1">VCC → 3.3V</span></strong></div>
-                            <div class="scheme-item"><span>⚫</span><strong class="pin-gnd"><span id="pin2">GND → GND</span></strong></div>
-                            <div class="scheme-item"><span>🔵</span><strong><span id="pin3">DATA → D2 (GPIO4)</span></strong></div>
-                            <div class="scheme-item"><span>⚡</span><strong><span id="pin4">Резистор 10кОм</span></strong></div>
-                        </div>
-                    </div>
-                    
-                    <h2 style="color: #667eea; margin: 30px 0 20px; text-align: center;" id="componentsTitle">⚡ КОМПОНЕНТЫ МЕТЕОСТАНЦИИ ⚡</h2>
-                    
-                    <div class="components-grid">
-                        <div class="component-card">
-                            <div class="component-icon">🔹</div>
-                            <h3 id="comp1">ESP8266 D1 Mini V2</h3>
-                            <p id="comp1desc">NodeMcu Lua ESP-12 (CH340) Type-C</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=esp8266+d1+mini+v2" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=esp8266+d1+mini+v2" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=esp8266+d1+mini+v2" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <div class="component-card">
-                            <div class="component-icon">🌡️</div>
-                            <h3 id="comp2">Датчик DHT22</h3>
-                            <p id="comp2desc">Температура и влажность</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=dht22" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=dht22" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=dht22" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <div class="component-card">
-                            <div class="component-icon">⚡</div>
-                            <h3 id="comp3">Резисторы 10кОм</h3>
-                            <p id="comp3desc">Для подтяжки данных</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=резисторы+10кОм" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=резисторы+10кОм" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=10k+resistor" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <div class="component-card">
-                            <div class="component-icon">🔋</div>
-                            <h3 id="comp4">Повербанк</h3>
-                            <p id="comp4desc">Для автономного питания</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=повербанк" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=повербанк" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=powerbank" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="code-section">
-                        <div class="code-header">
-                            <h2 id="codeTitle1">📟 ПОЛНЫЙ КОД МЕТЕОСТАНЦИИ</h2>
-                            <button class="copy-btn" onclick="copyCode('code1')" id="copyBtn1">📋 COPY</button>
-                        </div>
-                        <div class="code-block">
-                            <pre id="code1">
-#include &lt;ESP8266WiFi.h&gt;
-#include &lt;WiFiClientSecure.h&gt;
-#include &lt;UniversalTelegramBot.h&gt;
-#include &lt;DHT.h&gt;
 
-// ========== ТВОИ ДАННЫЕ ==========
-const char* ssid = "ваш WiFI";
-const char* password = "пароль от него";
-#define BOT_TOKEN "8530454620:AAE-HtR87zyZ91dSYn9auueMH3eeoGard4o"
-
-// ID разрешенных пользователей
-const String allowedUsers[] = {
-  "1234567890",//ID
-  "123456789",
-  "1234567890"
-};
-const int totalUsers = 3;
-// =================================
-
-#define DHTPIN 2
-#define DHTTYPE DHT22
-
-DHT dht(DHTPIN, DHTTYPE);
-WiFiClientSecure client;
-UniversalTelegramBot bot(BOT_TOKEN, client);
-
-float temperature = 0;
-float humidity = 0;
-unsigned long lastTime = 0;
-
-bool isAllowed(String chat_id) {
-  for(int i = 0; i < totalUsers; i++) {
-    if(allowedUsers[i] == chat_id) return true;
-  }
-  return false;
-}
-
-void setup() {
-  Serial.begin(115200);
-  dht.begin();
-  client.setInsecure();
-  
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-  }
-  
-  bot.sendMessage("404415869", "꧁༺ *БОТ ЗАПУЩЕН* ༻꧂", "Markdown");
-  bot.sendMessage("332677564", "꧁༺ *БОТ ЗАПУЩЕН* ༻꧂", "Markdown");
-  bot.sendMessage("8473046860", "꧁༺ *БОТ ЗАПУЩЕН* ༻꧂", "Markdown");
-}
-
-void loop() {
-  if(millis() - lastTime > 5000) {
-    float t = dht.readTemperature();
-    float h = dht.readHumidity();
-    if(!isnan(t) &amp;&amp; !isnan(h)) {
-      temperature = t;
-      humidity = h;
-    }
-    
-    int msgCount = bot.getUpdates(bot.last_message_received + 1);
-    
-    for(int i = 0; i < msgCount; i++) {
-      String chat = bot.messages[i].chat_id;
-      String text = bot.messages[i].text;
-      String name = bot.messages[i].from_name;
-      
-      if(!isAllowed(chat)) {
-        bot.sendMessage(chat, "⛔️ *НЕТ ДОСТУПА*", "Markdown");
-        continue;
-      }
-      
-      if(text == "/start" || text == "/menu") {
-        String msg = "";
-        String upperName = String(name);
-        upperName.toUpperCase();
-        
-        msg += "꧁༺ *ДОБРО ПОЖАЛОВАТЬ* ༻꧂\n\n";
-        msg += "*ПРИВЕТ, " + upperName + "*\n";
-        msg += "╔══════════════════╗\n";
-        msg += "║  *🌡 /TEMP*       ║\n";
-        msg += "║  *💧 /HUM*        ║\n";
-        msg += "║  *📊 /ALL*        ║\n";
-        msg += "║  *📋 /STYLE*      ║\n";
-        msg += "║  *📡 /STATUS*     ║\n";
-        msg += "║  *❓ /HELP*       ║\n";
-        msg += "╚══════════════════╝";
-        bot.sendMessage(chat, msg, "Markdown");
-      }
-      
-      else if(text == "/temp" || text == "/TEMP") {
-        String msg = "";
-        msg += "꧁༺ *ТЕМПЕРАТУРА* ༻꧂\n\n";
-        msg += "┏━━━━━━━━━━━━┓\n";
-        msg += "┃  *🌡  " + String(temperature, 1) + "°C*\n";
-        msg += "┃            ┃\n";
-        msg += "┗━━━━━━━━━━━━┛";
-        bot.sendMessage(chat, msg, "Markdown");
-      }
-      
-      else if(text == "/hum" || text == "/HUM") {
-        String msg = "";
-        msg += "꧁༺ *ВЛАЖНОСТЬ* ༻꧂\n\n";
-        msg += "┏━━━━━━━━━━━━┓\n";
-        msg += "┃  *💧  " + String(humidity, 1) + "%*\n";
-        msg += "┃            ┃\n";
-        msg += "┗━━━━━━━━━━━━┛";
-        bot.sendMessage(chat, msg, "Markdown");
-      }
-      
-      else if(text == "/all" || text == "/ALL") {
-        String msg = "";
-        msg += "꧁༺ *ВСЕ ДАННЫЕ* ༻꧂\n\n";
-        msg += "╔══════════════════╗\n";
-        msg += "║  *🌡 ТЕМПЕРАТУРА*\n";
-        msg += "║  *" + String(temperature, 1) + "°C*\n";
-        msg += "╠══════════════════╣\n";
-        msg += "║  *💧 ВЛАЖНОСТЬ*\n";
-        msg += "║  *" + String(humidity, 1) + "%*\n";
-        msg += "╚══════════════════╝\n\n";
-        
-        msg += "┌──────────────┐\n";
-        msg += "│ ";
-        if(temperature < 0) msg += "*❄️ МОРОЗ*";
-        else if(temperature < 10) msg += "*🌨 ХОЛОДНО*";
-        else if(temperature < 20) msg += "*🌥 СВЕЖО*";
-        else if(temperature < 30) msg += "*☀️ ТЕПЛО*";
-        else msg += "*🔥 ЖАРА*";
-        msg += "\n";
-        msg += "└──────────────┘";
-        
-        bot.sendMessage(chat, msg, "Markdown");
-      }
-
-      else if(text == "/style" || text == "/STYLE") {
-        String msg = "";
-        msg += "꧁༺ *НАШ СТИЛЬ* ༻꧂\n\n";
-        msg += "┏━━━━━━━━━━━━━━━━┓\n";
-        msg += "┃ *꧁༺ ТЕКСТ ༻꧂*    ┃\n";
-        msg += "┃ *꧁༒ ПРИМЕР ༒꧂*   ┃\n";
-        msg += "┃ *꧁☂️︎シ︎✰*          ┃\n";
-        msg += "┃ *ঔৣ☬✞*           ┃\n";
-        msg += "┗━━━━━━━━━━━━━━━━┛\n\n";
-        msg += "*✨ КАК ИСПОЛЬЗОВАТЬ:*\n";
-        msg += "*СКОПИРУЙ ꧁༺ И ༻꧂*\n";
-        msg += "*И ВСТАВЬ СВОЙ ТЕКСТ*";
-        bot.sendMessage(chat, msg, "Markdown");
-      }
-      
-      else if(text == "/status" || text == "/STATUS") {
-        String msg = "";
-        msg += "꧁༺ *СТАТУС* ༻꧂\n\n";
-        msg += "┏━━━━━━━━━━━━━━━━┓\n";
-        msg += "┃ *📶 WI-FI: " + String(ssid) + "*\n";
-        msg += "┃ *🌐 IP: " + WiFi.localIP().toString() + "*\n";
-        msg += "┃ *⏱️ РАБОТА: " + String(millis()/60000) + " МИН*\n";
-        msg += "┃ *📡 СИГНАЛ: " + String(WiFi.RSSI()) + " DBM*\n";
-        msg += "┗━━━━━━━━━━━━━━━━┛";
-        bot.sendMessage(chat, msg, "Markdown");
-      }
-      
-      else if(text == "/help" || text == "/HELP") {
-        String msg = "";
-        msg += "꧁༺ *ПОМОЩЬ* ༻꧂\n\n";
-        msg += "┌────────────────┐\n";
-        msg += "│ *🌡 /TEMP*      │\n";
-        msg += "│ *💧 /HUM*       │\n";
-        msg += "│ *📊 /ALL*       │\n";
-        msg += "│ *📋 /STYLE*     │\n";
-        msg += "│ *📡 /STATUS*    │\n";
-        msg += "│ *📋 /MENU*      │\n";
-        msg += "└────────────────┘";
-        bot.sendMessage(chat, msg, "Markdown");
-      }
-      
-      else {
-        String msg = "";
-        msg += "꧁༺ *ОШИБКА* ༻꧂\n\n";
-        msg += "┏━━━━━━━━━━━━━━━━┓\n";
-        msg += "┃ *❓ НЕИЗВЕСТНАЯ* ┃\n";
-        msg += "┃ *   КОМАНДА*    ┃\n";
-        msg += "┠────────────────┨\n";
-        msg += "┃ *НАПИШИ /MENU*  ┃\n";
-        msg += "┗━━━━━━━━━━━━━━━━┛";
-        bot.sendMessage(chat, msg, "Markdown");
-      }
-    }
-    
-    lastTime = millis();
-  }
-}
-                            </pre>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Проект 2 - RGB светодиод (с компонентами и схемой) -->
-                <div id="project2" class="project-content">
-                    <div class="greeting" id="greeting2">🌈 RGB светодиод + ESP8266 (режим точки доступа)</div>
-                    
-                    <div class="connection-scheme">
-                        <h2 id="schemeTitle2">🔌 СХЕМА ПОДКЛЮЧЕНИЯ RGB МОДУЛЯ KY-016 (HW-479)</h2>
-                        <div class="scheme-grid">
-                            <div class="scheme-item"><span>⚫</span><strong class="pin-gnd"><span id="rgbPin1">GND → GND</span></strong></div>
-                            <div class="scheme-item"><span>🔴</span><strong class="pin-red"><span id="rgbPin2">R → D1 (GPIO5) + 220 Ом</span></strong></div>
-                            <div class="scheme-item"><span>🟢</span><strong class="pin-green"><span id="rgbPin3">G → D2 (GPIO4) + 220 Ом</span></strong></div>
-                            <div class="scheme-item"><span>🔵</span><strong class="pin-blue"><span id="rgbPin4">B → D3 (GPIO0) + 220 Ом</span></strong></div>
-                        </div>
-                        <p style="text-align: center; margin-top: 15px; color: #ff4757; font-weight: bold;">⚠️ Резисторы 220 Ом обязательны для каждого канала!</p>
-                    </div>
-                    
-                    <h2 style="color: #667eea; margin: 30px 0 20px; text-align: center;" id="componentsTitle2">⚡ КОМПОНЕНТЫ ДЛЯ ПРОЕКТА ⚡</h2>
-                    
-                    <div class="components-grid">
-                        <!-- ESP8266 D1 Mini V2 -->
-                        <div class="component-card">
-                            <div class="component-icon">🔹</div>
-                            <h3>ESP8266 D1 Mini V2</h3>
-                            <p>NodeMcu Lua ESP-12 (CH340) Type-C</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=esp8266+d1+mini+v2" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=esp8266+d1+mini+v2" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=esp8266+d1+mini+v2" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <!-- RGB модуль KY-016 (HW-479) -->
-                        <div class="component-card">
-                            <div class="component-icon">🌈</div>
-                            <h3>RGB модуль KY-016 (HW-479)</h3>
-                            <p>Светодиодный модуль для Arduino</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=ky-016+arduino" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=ky-016+arduino" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=ky-016" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <!-- Коробка распределительная -->
-                        <div class="component-card">
-                            <div class="component-icon">📦</div>
-                            <h3>Коробка распределительная</h3>
-                            <p>65x65x50 мм, IP54, распаячная</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=коробка+распределительная+65x65" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=коробка+распределительная+65x65" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=junction+box+65x65" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <!-- Резисторы 220 Ом -->
-                        <div class="component-card">
-                            <div class="component-icon">⚡</div>
-                            <h3>Резисторы 220 Ом</h3>
-                            <p>3 штуки для каждого канала</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=резисторы+220+ом" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=резисторы+220+ом" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=220+ohm+resistor" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <!-- Провода -->
-                        <div class="component-card">
-                            <div class="component-icon">🔌</div>
-                            <h3>Соединительные провода</h3>
-                            <p>Папа-мама, мама-мама</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=провода+для+arduino" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=провода+для+arduino" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=dupont+cable" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="code-section">
-                        <div class="code-header">
-                            <h2 id="codeTitle2">📟 ПОЛНЫЙ СКЕТЧ RGB (КОПИРУЙ В ARDUINO IDE)</h2>
-                            <button class="copy-btn" onclick="copyCode('code2')" id="copyBtn2">📋 COPY</button>
-                        </div>
-                        <div class="code-block">
-                            <pre id="code2">
-#include &lt;ESP8266WiFi.h&gt;
-#include &lt;ESP8266WebServer.h&gt;
-
-// Определяем пины
-#define D0 16
-#define D1 5
-#define D2 4
-#define D3 0
-
-const char* ap_ssid = "RGB_Lamp";
-const char* ap_password = "12345678";
-
-ESP8266WebServer server(80);
-
-const int redPin = D1;
-const int greenPin = D2;
-const int bluePin = D3;
-
-int mode = 0;
-unsigned long lastModeUpdate = 0;
-int modeStep = 0;
-int modeRed = 1023, modeGreen = 0, modeBlue = 0;
-bool timerActive = false;
-unsigned long timerEndTime = 0;
-
-void setup() {
-  Serial.begin(115200);
-  pinMode(redPin, OUTPUT);
-  pinMode(greenPin, OUTPUT);
-  pinMode(bluePin, OUTPUT);
-  
-  WiFi.softAP(ap_ssid, ap_password);
-  
-  server.on("/", []() {
-    String page = R"rawliteral(
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;RGB Lamp (AP Mode)&lt;/title&gt;
-    &lt;style&gt;
-        body{font-family:Arial;text-align:center;background:linear-gradient(135deg,#667eea,#764ba2);padding:20px}
-        .container{max-width:500px;margin:0 auto;background:white;padding:20px;border-radius:20px}
-        .preview{width:150px;height:150px;border-radius:50%;margin:20px auto;border:3px solid white}
-        input[type=range]{width:100%}
-        .mode-btn{background:#f0f0f0;border:none;border-radius:10px;padding:10px;margin:5px;cursor:pointer}
-        .off-btn{background:#ff4757;color:white;border:none;border-radius:30px;padding:15px;width:100%;cursor:pointer;margin-top:20px}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;div class="container"&gt;
-        &lt;h1&gt;RGB Lamp (AP Mode)&lt;/h1&gt;
-        &lt;div class="preview" id="preview" style="background:rgb(255,0,0)"&gt;&lt;/div&gt;
-        &lt;div&gt;&lt;label&gt;Red &lt;span id="redVal"&gt;255&lt;/span&gt;&lt;/label&gt;&lt;input type="range" id="red" min="0" max="255" value="255" oninput="updateColor()"&gt;&lt;/div&gt;
-        &lt;div&gt;&lt;label&gt;Green &lt;span id="greenVal"&gt;0&lt;/span&gt;&lt;/label&gt;&lt;input type="range" id="green" min="0" max="255" value="0" oninput="updateColor()"&gt;&lt;/div&gt;
-        &lt;div&gt;&lt;label&gt;Blue &lt;span id="blueVal"&gt;0&lt;/span&gt;&lt;/label&gt;&lt;input type="range" id="blue" min="0" max="255" value="0" oninput="updateColor()"&gt;&lt;/div&gt;
-        &lt;button class="mode-btn" onclick="setMode(0)"&gt;Manual&lt;/button&gt;
-        &lt;button class="mode-btn" onclick="setMode(1)"&gt;Rainbow&lt;/button&gt;
-        &lt;button class="mode-btn" onclick="setMode(2)"&gt;Fire&lt;/button&gt;
-        &lt;button class="mode-btn" onclick="setMode(7)"&gt;Sunset&lt;/button&gt;
-        &lt;button class="off-btn" onclick="setColor(0,0,0)"&gt;OFF&lt;/button&gt;
-    &lt;/div&gt;
-    &lt;script&gt;
-        function updateColor(){
-            let r=document.getElementById('red').value;
-            let g=document.getElementById('green').value;
-            let b=document.getElementById('blue').value;
-            document.getElementById('redVal').innerHTML=r;
-            document.getElementById('greenVal').innerHTML=g;
-            document.getElementById('blueVal').innerHTML=b;
-            document.getElementById('preview').style.background='rgb('+r+','+g+','+b+')';
-            fetch('/set?r='+(r*4)+'&g='+(g*4)+'&b='+(b*4));
-        }
-        function setColor(r,g,b){
-            document.getElementById('red').value=r;
-            document.getElementById('green').value=g;
-            document.getElementById('blue').value=b;
-            updateColor();
-            fetch('/mode?m=0');
-        }
-        function setMode(m){
-            fetch('/mode?m='+m);
-        }
-    &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-)rawliteral";
-    server.send(200, "text/html", page);
-  });
-
-  server.on("/set", []() {
-    if(server.hasArg("r") && server.hasArg("g") && server.hasArg("b")) {
-      analogWrite(redPin, server.arg("r").toInt());
-      analogWrite(greenPin, server.arg("g").toInt());
-      analogWrite(bluePin, server.arg("b").toInt());
-      mode = 0;
-    }
-    server.send(200, "text/plain", "OK");
-  });
-
-  server.on("/mode", []() {
-    if(server.hasArg("m")) mode = server.arg("m").toInt();
-    server.send(200, "text/plain", "OK");
-  });
-
-  server.begin();
-  Serial.println("Server started. IP: " + WiFi.softAPIP().toString());
-}
-
-void loop() {
-  server.handleClient();
-}
-                            </pre>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Проект 3 - Arduino Uno/Nano -->
-                <div id="project3" class="project-content">
-                    <div class="greeting" id="greeting3">🔧 Arduino Uno и Nano</div>
-                    <div class="connection-scheme">
-                        <h2 id="schemeTitle3">🔌 ПРОЕКТ 1: Мигание светодиодом</h2>
-                        <div class="scheme-grid">
-                            <div class="scheme-item"><span>🔴</span><strong class="pin-red"><span id="blinkPin1">LED + → Pin 13</span></strong></div>
-                            <div class="scheme-item"><span>⚫</span><strong class="pin-gnd"><span id="blinkPin2">LED - → GND</span></strong></div>
-                            <div class="scheme-item"><span>⚡</span><strong><span id="blinkPin3">Резистор 220 Ом</span></strong></div>
-                        </div>
-                    </div>
-                    <div class="code-section">
-                        <div class="code-header">
-                            <h2 id="codeTitle3">📟 КОД Blink</h2>
-                            <button class="copy-btn" onclick="copyCode('code3')" id="copyBtn3">📋 COPY</button>
-                        </div>
-                        <div class="code-block">
-                            <pre id="code3">
-void setup() {
-  pinMode(13, OUTPUT);
-}
-
-void loop() {
-  digitalWrite(13, HIGH);
-  delay(1000);
-  digitalWrite(13, LOW);
-  delay(1000);
-}
-                            </pre>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Проект 4 - МЕМ SIX SEVEN НА ДИСПЛЕЕ (да, я идиот) -->
-                <div id="project4" class="project-content">
-                    <div class="greeting" id="greeting4">🔢 МЕМ SIX SEVEN НА ДИСПЛЕЕ (да, я идиот)</div>
-                    
-                    <div class="connection-scheme">
-                        <h2 id="schemeTitle4">🔌 СХЕМА ПОДКЛЮЧЕНИЯ LCD1602 I2C К ARDUINO UNO</h2>
-                        <div class="scheme-grid">
-                            <div class="scheme-item"><span>🔴</span><strong class="pin-red"><span id="lcdPin1">VCC → 5V</span></strong></div>
-                            <div class="scheme-item"><span>⚫</span><strong class="pin-gnd"><span id="lcdPin2">GND → GND</span></strong></div>
-                            <div class="scheme-item"><span>🟡</span><strong><span id="lcdPin3">SDA → A4</span></strong></div>
-                            <div class="scheme-item"><span>🟢</span><strong><span id="lcdPin4">SCL → A5</span></strong></div>
-                        </div>
-                        <p style="text-align: center; margin-top: 15px; color: #ff4757; font-weight: bold;">⚠️ Для работы нужна библиотека LiquidCrystal_I2C</p>
-                    </div>
-                    
-                    <h2 style="color: #667eea; margin: 30px 0 20px; text-align: center;" id="componentsTitle4">⚡ КОМПОНЕНТЫ ДЛЯ ПРОЕКТА ⚡</h2>
-                    
-                    <div class="components-grid">
-                        <!-- Arduino Uno R3 -->
-                        <div class="component-card">
-                            <div class="component-icon">🔧</div>
-                            <h3>Arduino Uno R3</h3>
-                            <p>Оригинальный или совместимый, USB кабель</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=arduino+uno" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=arduino+uno" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=arduino+uno" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <!-- LCD1602 I2C -->
-                        <div class="component-card">
-                            <div class="component-icon">📟</div>
-                            <h3>LCD1602 I2C (синий экран)</h3>
-                            <p>16x2 символов, с I2C адаптером</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=lcd1602+i2c" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=lcd1602+i2c" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=lcd1602+i2c" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                        
-                        <!-- Провода DuPont -->
-                        <div class="component-card">
-                            <div class="component-icon">🔌</div>
-                            <h3>Провода DuPont</h3>
-                            <p>Папа-папа, 4 штуки для подключения</p>
-                            <div class="shop-buttons">
-                                <a href="https://www.wildberries.ru/catalog/0/search.aspx?search=провода+dupont" target="_blank" class="shop-btn wb">Wildberries</a>
-                                <a href="https://www.ozon.ru/search/?text=провода+dupont" target="_blank" class="shop-btn ozon">Ozon</a>
-                                <a href="https://aliexpress.ru/wholesale?SearchText=dupont+cable" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="code-section">
-                        <div class="code-header">
-                            <h2 id="codeTitle4">📟 КОД: БОЛЬШИЕ ЦИФРЫ 6 И 7 НА LCD</h2>
-                            <button class="copy-btn" onclick="copyCode('code4')" id="copyBtn4">📋 COPY</button>
-                        </div>
-                        <div class="code-block">
-                            <pre id="code4">
-#include &lt;Wire.h&gt;
-#include &lt;LiquidCrystal_I2C.h&gt;
-
-LiquidCrystal_I2C lcd(0x27, 16, 2);
-
-// Массивы для создания кастомных сегментов больших цифр
-byte bar1[8] = {B11111, B11111, B00000, B00000, B00000, B00000, B00000, B00000};
-byte bar2[8] = {B11111, B11111, B00000, B00000, B00000, B11111, B11111, B11111};
-byte bar3[8] = {B00000, B00000, B00000, B00000, B00000, B11111, B11111, B11111};
-byte bar4[8] = {B11111, B11111, B11111, B11111, B11111, B11111, B11111, B11111};
-byte bar5[8] = {B00000, B00000, B00000, B00000, B00000, B00000, B11111, B11111};
-byte bar6[8] = {B11111, B11111, B11111, B00000, B00000, B00000, B00000, B00000};
-byte bar7[8] = {B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000};
-byte bar8[8] = {B11111, B11111, B11111, B11111, B11111, B00000, B00000, B00000};
-
-// Функция отрисовки большой цифры 6
-void drawSix(int x) {
-  lcd.setCursor(x, 0); lcd.write(4); lcd.write(2); lcd.write(2);
-  lcd.setCursor(x, 1); lcd.write(4); lcd.write(3); lcd.write(4);
-}
-
-// Функция отрисовки большой цифры 7
-void drawSeven(int x) {
-  lcd.setCursor(x, 0); lcd.write(1); lcd.write(1); lcd.write(4);
-  lcd.setCursor(x, 1); lcd.write(7); lcd.write(7); lcd.write(4);
-}
-
-void setup() {
-  lcd.init();
-  lcd.backlight();
-
-  // Загружаем кастомные символы в память дисплея (максимум 8 штук)
-  lcd.createChar(1, bar1);
-  lcd.createChar(2, bar2);
-  lcd.createChar(3, bar3);
-  lcd.createChar(4, bar4);
-  lcd.createChar(5, bar5);
-  lcd.createChar(6, bar6);
-  lcd.createChar(7, bar7);
-  lcd.createChar(8, bar8);
-
-  lcd.clear();
-
-  // Рисуем цифру 6, начиная с 5-го столбца
-  drawSix(5);
-  
-  // Рисуем цифру 7, начиная с 9-го столбца (оставляем пропуск между ними)
-  drawSeven(9);
-}
-
-void loop() {
-  // В loop ничего не нужно, так как число статичное
-}
-                            </pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- ВКЛАДКА ОБЗОРЫ И ТОВАРЫ -->
-            <div id="reviews" class="main-tab-content">
-                <div class="greeting" id="reviewsGreeting">📺 ОБЗОРЫ И 🛒 ТОВАРЫ</div>
-                
-                <div class="story" style="margin-bottom: 40px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;" id="review1Title">🔪 Нож WORKPRO</h3>
-                    <p id="review1p1">🔥 Удобный ножик с упором на лезвии — мелочь, а как выручает!</p>
-                    <div class="shop-buttons">
-                        <a href="https://ozon.ru/t/q4d9SQw" target="_blank" class="shop-btn ozon">OZON</a>
-                        <a href="https://ali.click/a50531d" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                    </div>
-                </div>
-                
-                <div class="story" style="margin-bottom: 40px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;" id="review2Title">🛠️ Инструмент для удаления неровностей</h3>
-                    <p id="review2p1">🔧 Универсальный инструмент для резки металла, пластика и сантехники</p>
-                    <div class="shop-buttons">
-                        <a href="https://ozon.ru/t/3hcBgCc" target="_blank" class="shop-btn ozon">OZON</a>
-                    </div>
-                </div>
-                
-                <div class="story" style="margin-bottom: 40px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;" id="review3Title">🔥 Турбозажигалка</h3>
-                    <p id="review3p1">⚡ Мощная турбозажигалка с ветрозащитой для термоусадки</p>
-                    <div class="shop-buttons">
-                        <a href="https://ozon.ru/t/8q63Xa2" target="_blank" class="shop-btn ozon">OZON</a>
-                        <a href="https://ali.click/gg65312" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                    </div>
-                </div>
-                
-                <div class="story" style="margin-bottom: 40px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;" id="review4Title">🖋️ Паяльник FMCHIP FM03</h3>
-                    <p id="review4p1">🔥 Цифровой паяльник 20 Вт, питается от повербанка</p>
-                    <div class="shop-buttons">
-                        <a href="https://ozon.ru/t/ho0SNiN" target="_blank" class="shop-btn ozon">OZON (паяльник)</a>
-                    </div>
-                </div>
-                
-                <div class="story" style="margin-bottom: 40px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;" id="review5Title">🚀 M5 Stick C Plus 2</h3>
-                    <p id="review5p1">🔥 ESP32-компьютер с цветным экраном, аккумулятором и гироскопом</p>
-                    <div class="shop-buttons">
-                        <a href="https://www.wildberries.ru/catalog/375883856/detail.aspx?size=547837802" target="_blank" class="shop-btn wb">Wildberries</a>
-                        <a href="https://aliexpress.ru/item/1_128464654.html?sku_id=5000000428152522" target="_blank" class="shop-btn aliexpress">AliExpress</a>
-                    </div>
-                </div>
-                
-                <h2 style="color: #667eea; margin: 30px 0 20px; text-align: center;" id="shopTitle">⚡ ГДЕ КУПИТЬ КОМПОНЕНТЫ ⚡</h2>
-                <div class="components-grid">
-                    <div class="component-card"><div class="component-icon">🔹</div><h3>ESP8266 D1 Mini V2</h3><div class="shop-buttons"><a href="#" class="shop-btn wb">Wildberries</a><a href="#" class="shop-btn ozon">Ozon</a><a href="#" class="shop-btn aliexpress">AliExpress</a></div></div>
-                    <div class="component-card"><div class="component-icon">🌡️</div><h3>Датчик DHT22</h3><div class="shop-buttons"><a href="#" class="shop-btn wb">Wildberries</a><a href="#" class="shop-btn ozon">Ozon</a><a href="#" class="shop-btn aliexpress">AliExpress</a></div></div>
-                    <div class="component-card"><div class="component-icon">🌈</div><h3>RGB модуль KY-016</h3><div class="shop-buttons"><a href="#" class="shop-btn wb">Wildberries</a><a href="#" class="shop-btn ozon">Ozon</a><a href="#" class="shop-btn aliexpress">AliExpress</a></div></div>
-                    <div class="component-card"><div class="component-icon">📦</div><h3>Коробка распределительная</h3><div class="shop-buttons"><a href="#" class="shop-btn wb">Wildberries</a><a href="#" class="shop-btn ozon">Ozon</a><a href="#" class="shop-btn aliexpress">AliExpress</a></div></div>
-                </div>
-            </div>
-            
-            <!-- ВКЛАДКА ВИДЕО -->
-            <div id="videos" class="main-tab-content">
-                <div class="greeting" id="videosGreeting">📺 ПОСЛЕДНИЕ ВИДЕО С КАНАЛА</div>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=ARDUINOESPPROJECT&index=1" allowfullscreen></iframe>
-                    <div class="video-placeholder"><span>⏳</span><p id="videoPlaceholderText">Видео скоро появится. Пожалуйста, подождите!</p></div>
-                </div>
-                <div style="text-align:center; margin:40px 0;">
-                    <a href="https://www.youtube.com/@ARDUINOESPPROJECT" target="_blank" style="display:inline-block; background:linear-gradient(135deg,#ff0000,#cc0000); color:white; padding:15px 40px; border-radius:50px; font-size:1.3em; font-weight:bold; text-decoration:none;">🔔 ПОДПИСАТЬСЯ НА КАНАЛ</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p class="username" id="footerText">АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ © 2026</p>
-        </div>
+        <h1 id="mainTitle">🔧 АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ 🔧</h1>
+        <p class="subtitle" id="mainDesc">Метеостанция, кастомные прошивки и разборы полезного железа</p>
     </div>
 
-    <script>
-        let currentLang = 'ru';
+    <div class="main-tabs">
+        <button class="main-tab-btn active" onclick="openMainTab('projects')" id="mainTabProjects">🔧 Проекты</button>
+        <button class="main-tab-btn" onclick="openMainTab('reviews')" id="mainTabReviews">📺 Обзоры + 🛒 Товары</button>
+    </div>
+
+    <div class="content">
+
+        <div id="projects" class="main-tab-content active">
+            <div class="greeting">
+                <h2 id="projGreetingTitle">👋 Добро пожаловать в мастерскую!</h2>
+                <p id="projGreetingDesc">Ниже представлены рабочие исходные коды для наших устройств. Копируйте, прошивайте и пользуйтесь!</p>
+            </div>
+
+            <div class="components-grid">
+                <div class="component-card">
+                    <div>
+                        <div class="component-icon">🌡️</div>
+                        <h3 id="card1Title">Домашняя Метеостанция</h3>
+                        <p id="card1Desc">Скрипт для считывания точных параметров температуры и влажности с датчика BME280 и вывода данных на OLED-дисплей.</p>
+                    </div>
+                    <div class="code-block-container">
+                        <div class="code-header">
+                            <span class="code-lang">C++ (Arduino)</span>
+                            <button class="btn-copy" onclick="copyCode('codeBme', this)">Копировать код</button>
+                        </div>
+                        <pre id="codeBme">#include &lt;Wire.h&gt;
+#include &lt;Adafruit_BME280.h&gt;
+
+Adafruit_BME280 bme;
+
+void setup() {
+  Wire.begin();
+  bme.begin(0x76);
+}
+
+void loop() {
+  float temp = bme.readTemperature();
+  delay(2000);
+}</pre>
+                    </div>
+                </div>
+
+                <div class="component-card">
+                    <div>
+                        <div class="component-icon">🌈</div>
+                        <h3 id="card2Title">RGB Ночник</h3>
+                        <p id="card2Desc">Плавное управление адресной светодиодной лентой WS2812B для создания неоновых эффектов и Cyberpunk атмосферы.</p>
+                    </div>
+                    <div class="code-block-container">
+                        <div class="code-header">
+                            <span class="code-lang">C++ (FastLED)</span>
+                            <button class="btn-copy" onclick="copyCode('codeRgb', this)">Копировать код</button>
+                        </div>
+                        <pre id="codeRgb">#include &lt;FastLED.h&gt;
+#define NUM_LEDS 30
+CRGB leds[NUM_LEDS];
+
+void setup() {
+  FastLED.addLeds&lt;NEOPIXEL, 6&gt;(leds, NUM_LEDS);
+}
+
+void loop() {
+  fill_rainbow(leds, NUM_LEDS, 0, 7);
+  FastLED.show();
+  delay(30);
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="reviews" class="main-tab-content">
+            <div class="greeting">
+                <h2 id="revGreetingTitle">🛠️ Подробные обзоры инструментов и девайсов</h2>
+                <p id="revGreetingDesc">Честный разбор железа, микроконтроллеров и гаджетов, которые мы используем в проектах. Подробные спецификации, плюсы и проверенные ссылки.</p>
+            </div>
+
+            <div class="components-grid">
+                
+                <div class="component-card">
+                    <div>
+                        <div class="component-icon">📟</div>
+                        <h3 style="color: var(--accent-pink);" id="prodTitle1">M5StickC Plus2 (ESP32-PICO)</h3>
+                        <div style="background: rgba(255, 0, 127, 0.1); border-left: 3px solid var(--accent-pink); padding: 8px; margin-bottom: 15px; font-size: 0.85em; text-radius: 4px;" id="prodStatus1">
+                            <strong>Статус:</strong> Идеально под кастомные прошивки (Bruce, Marauder)
+                        </div>
+                        <p id="prodDesc1">
+                            Карманный мини-компьютер на базе чипа ESP32 с Wi-Fi и Bluetooth. Версия Plus2 получила увеличенный экран (1.14 дюйма, 135x240 точек) и встроенный аккумулятор на 200 мАч.<br><br>
+                            <strong>Главные фишки:</strong><br>
+                            • <strong>IR-передатчик:</strong> Позволяет управлять ТВ и кондиционерами удаленно через скрипты.<br>
+                            • <strong>Периферия:</strong> Встроенный зуммер, микрофон, 6-осевой гироскоп и 3 физические кнопки.<br>
+                            • <strong>Автономность:</strong> Отлично подходит для запуска JS-скриптов и игровых систем прокачки без внешних SD-карт.
+                        </p>
+                    </div>
+                    <div class="shop-buttons">
+                        <a href="https://www.ozon.ru/" target="_blank" class="shop-btn ozon">На Ozon</a>
+                        <a href="https://www.aliexpress.com/" target="_blank" class="shop-btn aliexpress">Aliexpress</a>
+                    </div>
+                </div>
+
+                <div class="component-card">
+                    <div>
+                        <div class="component-icon">🧠</div>
+                        <h3 style="color: var(--accent-cyan);" id="prodTitle2">Плата разработки ESP32 NodeMCU</h3>
+                        <div style="background: rgba(0, 240, 255, 0.1); border-left: 3px solid var(--accent-cyan); padding: 8px; margin-bottom: 15px; font-size: 0.85em; text-radius: 4px;" id="prodStatus2">
+                            <strong>Статус:</strong> Народный выбор для умного дома и сетевых задач
+                        </div>
+                        <p id="prodDesc2">
+                            Двухъядерный процессор Xtensa с частотой до 240 МГц легко справляется со сложной автоматизацией и веб-серверами.<br><br>
+                            <strong>Технические параметры:</strong><br>
+                            • <strong>Связь:</strong> Wi-Fi 802.11 b/g/n и Bluetooth v4.2 BLE для беспроводных датчиков или сканирования эфира.<br>
+                            • <strong>Память:</strong> 4 МБ флеш-памяти вмещают тяжелые скрипты и кастомные веб-интерфейсы.<br>
+                            • <strong>Среда:</strong> Поддерживает Arduino IDE, MicroPython и JavaScript (Espruino).
+                        </p>
+                    </div>
+                    <div class="shop-buttons">
+                        <a href="https://www.wildberries.ru/" target="_blank" class="shop-btn wb">На WB</a>
+                        <a href="https://www.aliexpress.com/" target="_blank" class="shop-btn aliexpress">Aliexpress</a>
+                    </div>
+                </div>
+
+                <div class="component-card">
+                    <div>
+                        <div class="component-icon">🔥</div>
+                        <h3 style="color: var(--accent-green);" id="prodTitle3">Умный паяльник Pinecil V2</h3>
+                        <div style="background: rgba(57, 255, 20, 0.1); border-left: 3px solid var(--accent-green); padding: 8px; margin-bottom: 15px; font-size: 0.85em; text-radius: 4px;" id="prodStatus3">
+                            <strong>Статус:</strong> Лучший инструмент на открытой архитектуре RISC-V
+                        </div>
+                        <p id="prodDesc3">
+                            Портативный девайс под управлением ОС IronOS, которая дает точнейший контроль температуры и графики на экране.<br><br>
+                            <strong>Преимущества:</strong><br>
+                            • <strong>Экстремальный нагрев:</strong> До 88W через DC-разъем (24V) или 65W через Type-C от павербанка с PD. Нагрев до 300°C занимает 6-8 секунд.<br>
+                            • <strong>Ювелирная точность:</strong> Укороченные жала типа Short-Tip гарантируют полный контроль при пайке мелких SMD компонентов.
+                        </p>
+                    </div>
+                    <div class="shop-buttons">
+                        <a href="https://www.ozon.ru/" target="_blank" class="shop-btn ozon">На Ozon</a>
+                        <a href="https://www.wildberries.ru/" target="_blank" class="shop-btn wb">На WB</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="copyNotice" class="notification">📋 Скопировано!</div>
+
+<script>
+    // Мультиязычная база данных
+    const translations = {
+        ru: {
+            langBtn: "🇬🇧 English",
+            subYt: "ПОДПИШИСЬ: ARDUINO ESPPROJECT",
+            subTg: "ПОДПИШИСЬ: АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ",
+            mainTitle: "🔧 АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ 🔧",
+            mainDesc: "Метеостанция, кастомные прошивки и разборы полезного железа",
+            mainTabProjects: "🔧 Проекты",
+            mainTabReviews: "📺 Обзоры + 🛒 Товары",
+            projGreetingTitle: "👋 Добро пожаловать в мастерскую!",
+            projGreetingDesc: "Ниже представлены рабочие исходные коды для наших устройств. Копируйте, прошивайте и пользуйтесь!",
+            card1Title: "Домашняя Метеостанция",
+            card1Desc: "Скрипт для считывания точных параметров температуры и влажности с датчика BME280 и вывода данных на OLED-дисплей.",
+            card2Title: "RGB Ночник",
+            card2Desc: "Плавное управление адресной светодиодной лентой WS2812B для создания неоновых эффектов и Cyberpunk атмосферы.",
+            copyBtn: "Копировать код",
+            copiedBtn: "Скопировано!",
+            copyNotification: "📋 Скопировано!",
+            // Обзоры
+            revTitle: "🛠️ Подробные обзоры инструментов и девайсов",
+            revDesc: "Честный разбор железа, микроконтроллеров и гаджетов, которые мы используем в проектах. Подробные спецификации, плюсы и проверенные ссылки.",
+            prodTitle1: "M5StickC Plus2 (ESP32-PICO)",
+            prodStatus1: "<strong>Статус:</strong> Идеально под кастомные прошивки (Bruce, Marauder)",
+            prodDesc1: "Карманный мини-компьютер на базе чипа ESP32 с Wi-Fi и Bluetooth. Версия Plus2 получила увеличенный экран (1.14 дюйма, 135x240 точек) и встроенный аккумулятор на 200 мАч.<br><br><strong>Главные фишки:</strong><br>• <strong>IR-передатчик:</strong> Позволяет управлять ТВ и кондиционерами удаленно через скрипты.<br>• <strong>Периферия:</strong> Встроенный зуммер, микрофон, 6-осевой гироскоп и 3 физические кнопки.<br>• <strong>Автономность:</strong> Отлично подходит для запуска JS-скриптов и игровых систем прокачки без внешних SD-карт.",
+            prodTitle2: "Плата разработки ESP32 NodeMCU",
+            prodStatus2: "<strong>Статус:</strong> Народный выбор для умного дома и сетевых задач",
+            prodDesc2: "Двухъядерный процессор Xtensa с частотой до 240 МГц легко справляется со сложной автоматизацией и веб-серверами.<br><br><strong>Технические параметры:</strong><br>• <strong>Связь:</strong> Wi-Fi 802.11 b/g/n и Bluetooth v4.2 BLE для беспроводных датчиков или сканирования эфира.<br>• <strong>Память:</strong> 4 МБ флеш-памяти вмещают тяжелые скрипты и кастомные веб-интерфейсы.<br>• <strong>Среда:</strong> Поддерживает Arduino IDE, MicroPython и JavaScript (Espruino).",
+            prodTitle3: "Умный паяльник Pinecil V2",
+            prodStatus3: "<strong>Статус:</strong> Лучший инструмент на открытой архитектуре RISC-V",
+            prodDesc3: "Портативный девайс под управлением ОС IronOS, которая дает точнейший контроль температуры и графики на экране.<br><br><strong>Преимущества:</strong><br>• <strong>Экстремальный нагрев:</strong> До 88W через DC-разъем (24V) или 65W через Type-C от павербанка с PD. Нагрев до 300°C занимает 6-8 секунд.<br>• <strong>Ювелирная точность:</strong> Укороченные жала типа Short-Tip гарантируют полный контроль при пайке мелких SMD компонентов."
+        },
+        en: {
+            langBtn: "🇷🇺 Русский",
+            subYt: "SUBSCRIBE: ARDUINO ESPPROJECT",
+            subTg: "SUBSCRIBE: ARDUINO PROJECTS & SOLDERING IRONS",
+            mainTitle: "🔧 ARDUINO PROJECTS & SOLDERING 🔧",
+            mainDesc: "Weather station, custom firmware and useful hardware reviews",
+            mainTabProjects: "🔧 Projects",
+            mainTabReviews: "📺 Reviews + 🛒 Shop",
+            projGreetingTitle: "👋 Welcome to the Workshop!",
+            projGreetingDesc: "Below are working source codes for our devices. Copy, flash and enjoy!",
+            card1Title: "Home Weather Station",
+            card1Desc: "Script for reading highly accurate temperature and humidity parameters from the BME280 sensor and displaying data on an OLED screen.",
+            card2Title: "RGB Night Light",
+            card2Desc: "Smooth control of the WS2812B addressable LED strip to create neon effects and a Cyberpunk atmosphere.",
+            copyBtn: "Copy code",
+            copiedBtn: "Copied!",
+            copyNotification: "📋 Copied to clipboard!",
+            // Reviews
+            revTitle: "🛠️ Detailed Tool & Device Reviews",
+            revDesc: "Honest teardowns of hardware, microcontrollers, and gadgets used in our projects. Detailed specs, pros, and verified links.",
+            prodTitle1: "M5StickC Plus2 (ESP32-PICO)",
+            prodStatus1: "<strong>Status:</strong> Ideal for custom firmware (Bruce, Marauder)",
+            prodDesc1: "Pocket mini-computer based on the ESP32 chip with Wi-Fi and Bluetooth. The Plus2 version features an enlarged screen (1.14 inch, 135x240 dots) and a built-in 200 mAh battery.<br><br><strong>Key Features:</strong><br>• <strong>IR Transmitter:</strong> Remotely control TVs and ACs via customized scripts.<br>• <strong>Peripherals:</strong> Built-in buzzer, microphone, 6-axis gyro, and 3 physical buttons.<br>• <strong>Portability:</strong> Great for standalone JS scripts and gamified level systems without external SD cards.",
+            prodTitle2: "ESP32 NodeMCU Dev Board",
+            prodStatus2: "<strong>Status:</strong> Community choice for Smart Home and network tasks",
+            prodDesc2: "Dual-core Xtensa processor running up to 240 MHz easily handles complex automation, rendering, and web servers.<br><br><strong>Technical specs:</strong><br>• <strong>Wireless:</strong> Wi-Fi 802.11 b/g/n and Bluetooth v4.2 BLE for remote sensors or sniffing packet traffic.<br>• <strong>Memory:</strong> 4 MB flash memory to store heavy scripts and custom web interfaces.<br>• <strong>Environment:</strong> Fully supports Arduino IDE, MicroPython, and JavaScript (Espruino).",
+            prodTitle3: "Pinecil V2 Smart Soldering Iron",
+            prodStatus3: "<strong>Status:</strong> Best engineering tool based on open RISC-V architecture",
+            prodDesc3: "Portable soldering iron powered by IronOS, providing extreme temperature adjustments and customized display animations.<br><br><strong>Advantages:</strong><br>• <strong>Extreme Heating:</strong> Up to 88W via DC jack (24V) or 65W via Type-C from a power bank with PD. Heats up to 300°C in just 6-8 seconds.<br>• <strong>Ergonomics:</strong> Short-Tip type soldering tips guarantee high precision during micro SMD components soldering."
+        }
+    };
+
+    let currentLang = 'ru';
+
+    // Функция смены языка
+    function toggleLanguage() {
+        currentLang = currentLang === 'ru' ? 'en' : 'ru';
+        const t = translations[currentLang];
+
+        document.getElementById('langBtn').innerText = t.langBtn;
+        document.getElementById('subYt').innerText = t.subYt;
+        document.getElementById('subTg').innerText = t.subTg;
+        document.getElementById('mainTitle').innerText = t.mainTitle;
+        document.getElementById('mainDesc').innerText = t.mainDesc;
+        document.getElementById('mainTabProjects').innerText = t.mainTabProjects;
+        document.getElementById('mainTabReviews').innerText = t.mainTabReviews;
         
-        const translations = {
-            ru: {
-                langBtn: '🇬🇧 English',
-                subscribeYoutube: 'ПОДПИШИСЬ: ARDUINO ESPPROJECT',
-                subscribeTelegram: 'ПОДПИШИСЬ: АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ',
-                mainTitle: '🔧 АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ 🔧',
-                mainDesc: 'Метеостанция, RGB светодиод и другие проекты',
-                badge: '2026',
-                mainTabProjects: '🔧 Проекты',
-                mainTabReviews: '📺 Обзоры + 🛒 Товары',
-                mainTabVideos: '📺 Видео',
-                projectTab1: '📋 1. Метеостанция',
-                projectTab2: '💡 2. RGB светодиод',
-                projectTab3: '🔧 3. Arduino Uno/Nano',
-                projectTab4: '🔢 4. МЕМ SIX SEVEN',
-                greeting1: '👋 ВСЕМ ПРИВЕТ!',
-                story1p1: '🔥 Как и обещал, расскажу про проект метеостанция. Взял ESP8266, потом DHT22. Решил сначала сделать сайт - сделал, мне не понравилось. Потом создал бота в Telegram, делал его 2 дня.',
-                story1p2: '🤖 Бот показывает температуру и влажность. Сделал его приватным. Прошил ESP, подключил к повербанку, взял коробку, вырезал отверстия, просунул датчик - и понеслась!',
-                highlight1: '✨ СТАЛ ДОБАВЛЯТЬ В БОТА ПРИКОЛЫ ✨',
-                story2: '📱 Создавал его через @BotFather, написал код в Arduino IDE. Код будет ниже. Настолько понравился проект, что решил заказать печать у @Bolodechka. Пока что думаю...',
-                signature: 'АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ, 25.02.2026 21:34',
-                schemeTitle1: '🔌 СХЕМА ПОДКЛЮЧЕНИЯ DHT22',
-                pin1: 'VCC → 3.3V',
-                pin2: 'GND → GND',
-                pin3: 'DATA → D2 (GPIO4)',
-                pin4: 'Резистор 10кОм',
-                componentsTitle: '⚡ КОМПОНЕНТЫ МЕТЕОСТАНЦИИ ⚡',
-                comp1: 'ESP8266 D1 Mini V2',
-                comp1desc: 'NodeMcu Lua ESP-12 (CH340) Type-C',
-                comp2: 'Датчик DHT22',
-                comp2desc: 'Температура и влажность',
-                comp3: 'Резисторы 10кОм',
-                comp3desc: 'Для подтяжки данных',
-                comp4: 'Повербанк',
-                comp4desc: 'Для автономного питания',
-                codeTitle1: '📟 ПОЛНЫЙ КОД МЕТЕОСТАНЦИИ',
-                greeting2: '🌈 RGB светодиод + ESP8266 (режим точки доступа)',
-                schemeTitle2: '🔌 СХЕМА ПОДКЛЮЧЕНИЯ RGB МОДУЛЯ KY-016 (HW-479)',
-                rgbPin1: 'GND → GND',
-                rgbPin2: 'R → D1 (GPIO5) + 220 Ом',
-                rgbPin3: 'G → D2 (GPIO4) + 220 Ом',
-                rgbPin4: 'B → D3 (GPIO0) + 220 Ом',
-                componentsTitle2: '⚡ КОМПОНЕНТЫ ДЛЯ ПРОЕКТА ⚡',
-                codeTitle2: '📟 ПОЛНЫЙ СКЕТЧ RGB (КОПИРУЙ В ARDUINO IDE)',
-                greeting3: '🔧 Arduino Uno и Nano',
-                schemeTitle3: '🔌 ПРОЕКТ 1: Мигание светодиодом',
-                blinkPin1: 'LED + → Pin 13',
-                blinkPin2: 'LED - → GND',
-                blinkPin3: 'Резистор 220 Ом',
-                codeTitle3: '📟 КОД Blink',
-                greeting4: '🔢 МЕМ SIX SEVEN НА ДИСПЛЕЕ (да, я идиот)',
-                schemeTitle4: '🔌 СХЕМА ПОДКЛЮЧЕНИЯ LCD1602 I2C К ARDUINO UNO',
-                lcdPin1: 'VCC → 5V',
-                lcdPin2: 'GND → GND',
-                lcdPin3: 'SDA → A4',
-                lcdPin4: 'SCL → A5',
-                componentsTitle4: '⚡ КОМПОНЕНТЫ ДЛЯ ПРОЕКТА ⚡',
-                codeTitle4: '📟 КОД: БОЛЬШИЕ ЦИФРЫ 6 И 7 НА LCD',
-                soonText: 'СКОРО...',
-                reviewsGreeting: '📺 ОБЗОРЫ И 🛒 ТОВАРЫ',
-                review1Title: '🔪 Нож WORKPRO',
-                review1p1: '🔥 Удобный ножик с упором на лезвии — мелочь, а как выручает!',
-                review2Title: '🛠️ Инструмент для удаления неровностей',
-                review2p1: '🔧 Универсальный инструмент для резки металла, пластика и сантехники',
-                review3Title: '🔥 Турбозажигалка',
-                review3p1: '⚡ Мощная турбозажигалка с ветрозащитой для термоусадки',
-                review4Title: '🖋️ Паяльник FMCHIP FM03',
-                review4p1: '🔥 Цифровой паяльник 20 Вт, питается от повербанка',
-                review5Title: '🚀 M5 Stick C Plus 2',
-                review5p1: '🔥 ESP32-компьютер с цветным экраном, аккумулятором и гироскопом',
-                shopTitle: '⚡ ГДЕ КУПИТЬ КОМПОНЕНТЫ ⚡',
-                videosGreeting: '📺 ПОСЛЕДНИЕ ВИДЕО С КАНАЛА',
-                videoPlaceholderText: 'Видео скоро появится. Пожалуйста, подождите!',
-                footer: 'АРДУИНО ПРОЕКТЫ И ПАЯЛЬНИКИ © 2026',
-                copyBtn: '📋 COPY'
-            },
-            en: {
-                langBtn: '🇷🇺 Русский',
-                subscribeYoutube: 'SUBSCRIBE: ARDUINO ESPPROJECT',
-                subscribeTelegram: 'SUBSCRIBE: ARDUINO PROJECTS AND SOLDERING',
-                mainTitle: '🔧 ARDUINO PROJECTS AND SOLDERING 🔧',
-                mainDesc: 'Weather station, RGB LED and other projects',
-                badge: '2026',
-                mainTabProjects: '🔧 Projects',
-                mainTabReviews: '📺 Reviews + 🛒 Shop',
-                mainTabVideos: '📺 Videos',
-                projectTab1: '📋 1. Weather Station',
-                projectTab2: '💡 2. RGB LED',
-                projectTab3: '🔧 3. Arduino Uno/Nano',
-                projectTab4: '🔢 4. MEME SIX SEVEN',
-                greeting1: '👋 HELLO EVERYONE!',
-                story1p1: '🔥 As promised, I\'ll tell you about the weather station project.',
-                story1p2: '🤖 The bot shows temperature and humidity.',
-                highlight1: '✨ STARTED ADDING FUN STUFF TO THE BOT ✨',
-                story2: '📱 Created it via @BotFather, wrote the code in Arduino IDE.',
-                signature: 'ARDUINO PROJECTS AND SOLDERING, 25.02.2026 21:34',
-                schemeTitle1: '🔌 DHT22 CONNECTION DIAGRAM',
-                pin1: 'VCC → 3.3V',
-                pin2: 'GND → GND',
-                pin3: 'DATA → D2 (GPIO4)',
-                pin4: '10kΩ Resistor',
-                componentsTitle: '⚡ WEATHER STATION COMPONENTS ⚡',
-                comp1: 'ESP8266 D1 Mini V2',
-                comp1desc: 'NodeMcu Lua ESP-12 (CH340) Type-C',
-                comp2: 'DHT22 Sensor',
-                comp2desc: 'Temperature and humidity',
-                comp3: '10kΩ Resistors',
-                comp3desc: 'For data pull-up',
-                comp4: 'Power Bank',
-                comp4desc: 'For autonomous power',
-                codeTitle1: '📟 FULL WEATHER STATION CODE',
-                greeting2: '🌈 RGB LED + ESP8266 (access point mode)',
-                schemeTitle2: '🔌 RGB MODULE KY-016 (HW-479) CONNECTION',
-                rgbPin1: 'GND → GND',
-                rgbPin2: 'R → D1 (GPIO5) + 220Ω',
-                rgbPin3: 'G → D2 (GPIO4) + 220Ω',
-                rgbPin4: 'B → D3 (GPIO0) + 220Ω',
-                componentsTitle2: '⚡ PROJECT COMPONENTS ⚡',
-                codeTitle2: '📟 FULL RGB SKETCH (COPY TO ARDUINO IDE)',
-                greeting3: '🔧 Arduino Uno and Nano',
-                schemeTitle3: '🔌 PROJECT 1: LED Blink',
-                blinkPin1: 'LED + → Pin 13',
-                blinkPin2: 'LED - → GND',
-                blinkPin3: '220Ω Resistor',
-                codeTitle3: '📟 Blink CODE',
-                greeting4: '🔢 MEME SIX SEVEN ON DISPLAY (yes, I\'m an idiot)',
-                schemeTitle4: '🔌 LCD1602 I2C TO ARDUINO UNO CONNECTION',
-                lcdPin1: 'VCC → 5V',
-                lcdPin2: 'GND → GND',
-                lcdPin3: 'SDA → A4',
-                lcdPin4: 'SCL → A5',
-                componentsTitle4: '⚡ PROJECT COMPONENTS ⚡',
-                codeTitle4: '📟 CODE: BIG DIGITS 6 AND 7 ON LCD',
-                soonText: 'SOON...',
-                reviewsGreeting: '📺 REVIEWS AND 🛒 SHOP',
-                review1Title: '🔪 WORKPRO Knife',
-                review1p1: '🔥 Convenient knife with a blade stop - a small thing, but how it helps!',
-                review2Title: '🛠️ Deburring tool',
-                review2p1: '🔧 A universal tool for cutting metal, plastic and plumbing materials',
-                review3Title: '🔥 Turbo lighter',
-                review3p1: '⚡ Powerful turbo lighter with wind protection for heat shrink',
-                review4Title: '🖋️ FMCHIP FM03 Soldering Iron',
-                review4p1: '🔥 Digital soldering iron 20W, powered by power bank',
-                review5Title: '🚀 M5 Stick C Plus 2',
-                review5p1: '🔥 ESP32 computer with color screen, battery and gyroscope',
-                shopTitle: '⚡ WHERE TO BUY COMPONENTS ⚡',
-                videosGreeting: '📺 LATEST VIDEOS FROM THE CHANNEL',
-                videoPlaceholderText: 'Video will appear soon. Please wait!',
-                footer: 'ARDUINO PROJECTS AND SOLDERING © 2026',
-                copyBtn: '📋 COPY'
+        // Вкладка Проекты
+        document.getElementById('projGreetingTitle').innerText = t.projGreetingTitle;
+        document.getElementById('projGreetingDesc').innerText = t.projGreetingDesc;
+        document.getElementById('card1Title').innerText = t.card1Title;
+        document.getElementById('card1Desc').innerText = t.card1Desc;
+        document.getElementById('card2Title').innerText = t.card2Title;
+        document.getElementById('card2Desc').innerText = t.card2Desc;
+        
+        // Кнопки копирования
+        document.querySelectorAll('.btn-copy').forEach(btn => {
+            if(btn.innerText === 'Копировать код' || btn.innerText === 'Copy code') {
+                btn.innerText = t.copyBtn;
+            } else {
+                btn.innerText = t.copiedBtn;
             }
-        };
+        });
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'ru' ? 'en' : 'ru';
-            updateLanguage();
-            localStorage.setItem('language', currentLang);
-        }
+        // Вкладка Обзоры
+        document.getElementById('revGreetingTitle').innerText = t.revTitle;
+        document.getElementById('revGreetingDesc').innerText = t.revDesc;
+        document.getElementById('prodTitle1').innerText = t.prodTitle1;
+        document.getElementById('prodStatus1').innerHTML = t.prodStatus1;
+        document.getElementById('prodDesc1').innerHTML = t.prodDesc1;
+        document.getElementById('prodTitle2').innerText = t.prodTitle2;
+        document.getElementById('prodStatus2').innerHTML = t.prodStatus2;
+        document.getElementById('prodDesc2').innerHTML = t.prodDesc2;
+        document.getElementById('prodTitle3').innerText = t.prodTitle3;
+        document.getElementById('prodStatus3').innerHTML = t.prodStatus3;
+        document.getElementById('prodDesc3').innerHTML = t.prodDesc3;
+    }
+
+    // Функция переключения вкладок
+    function openMainTab(tabId) {
+        document.querySelectorAll('.main-tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.querySelectorAll('.main-tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        document.getElementById(tabId).classList.add('active');
         
-        function updateLanguage() {
-            const t = translations[currentLang];
-            document.getElementById('langBtn').textContent = t.langBtn;
-            document.getElementById('subscribeYoutube').textContent = t.subscribeYoutube;
-            document.getElementById('subscribeTelegram').textContent = t.subscribeTelegram;
-            document.getElementById('mainTitle').textContent = t.mainTitle;
-            document.getElementById('mainDesc').textContent = t.mainDesc;
-            document.getElementById('badge').textContent = t.badge;
-            document.getElementById('mainTabProjects').textContent = t.mainTabProjects;
-            document.getElementById('mainTabReviews').textContent = t.mainTabReviews;
-            document.getElementById('mainTabVideos').textContent = t.mainTabVideos;
-            document.getElementById('projectTab1').textContent = t.projectTab1;
-            document.getElementById('projectTab2').textContent = t.projectTab2;
-            document.getElementById('projectTab3').textContent = t.projectTab3;
-            document.getElementById('projectTab4').textContent = t.projectTab4;
-            document.getElementById('greeting1').textContent = t.greeting1;
-            document.getElementById('story1p1').textContent = t.story1p1;
-            document.getElementById('story1p2').textContent = t.story1p2;
-            document.getElementById('highlight1').textContent = t.highlight1;
-            document.getElementById('story2').textContent = t.story2;
-            document.getElementById('signature').textContent = t.signature;
-            document.getElementById('schemeTitle1').textContent = t.schemeTitle1;
-            document.getElementById('pin1').textContent = t.pin1;
-            document.getElementById('pin2').textContent = t.pin2;
-            document.getElementById('pin3').textContent = t.pin3;
-            document.getElementById('pin4').textContent = t.pin4;
-            document.getElementById('componentsTitle').textContent = t.componentsTitle;
-            document.getElementById('comp1').textContent = t.comp1;
-            document.getElementById('comp1desc').textContent = t.comp1desc;
-            document.getElementById('comp2').textContent = t.comp2;
-            document.getElementById('comp2desc').textContent = t.comp2desc;
-            document.getElementById('comp3').textContent = t.comp3;
-            document.getElementById('comp3desc').textContent = t.comp3desc;
-            document.getElementById('comp4').textContent = t.comp4;
-            document.getElementById('comp4desc').textContent = t.comp4desc;
-            document.getElementById('codeTitle1').textContent = t.codeTitle1;
-            document.getElementById('greeting2').textContent = t.greeting2;
-            document.getElementById('schemeTitle2').textContent = t.schemeTitle2;
-            document.getElementById('rgbPin1').textContent = t.rgbPin1;
-            document.getElementById('rgbPin2').textContent = t.rgbPin2;
-            document.getElementById('rgbPin3').textContent = t.rgbPin3;
-            document.getElementById('rgbPin4').textContent = t.rgbPin4;
-            document.getElementById('componentsTitle2').textContent = t.componentsTitle2;
-            document.getElementById('codeTitle2').textContent = t.codeTitle2;
-            document.getElementById('greeting3').textContent = t.greeting3;
-            document.getElementById('schemeTitle3').textContent = t.schemeTitle3;
-            document.getElementById('blinkPin1').textContent = t.blinkPin1;
-            document.getElementById('blinkPin2').textContent = t.blinkPin2;
-            document.getElementById('blinkPin3').textContent = t.blinkPin3;
-            document.getElementById('codeTitle3').textContent = t.codeTitle3;
-            document.getElementById('greeting4').textContent = t.greeting4;
-            document.getElementById('schemeTitle4').textContent = t.schemeTitle4;
-            document.getElementById('lcdPin1').textContent = t.lcdPin1;
-            document.getElementById('lcdPin2').textContent = t.lcdPin2;
-            document.getElementById('lcdPin3').textContent = t.lcdPin3;
-            document.getElementById('lcdPin4').textContent = t.lcdPin4;
-            document.getElementById('componentsTitle4').textContent = t.componentsTitle4;
-            document.getElementById('codeTitle4').textContent = t.codeTitle4;
-            document.getElementById('soonText').textContent = t.soonText;
-            document.getElementById('reviewsGreeting').textContent = t.reviewsGreeting;
-            document.getElementById('review1Title').textContent = t.review1Title;
-            document.getElementById('review1p1').textContent = t.review1p1;
-            document.getElementById('review2Title').textContent = t.review2Title;
-            document.getElementById('review2p1').textContent = t.review2p1;
-            document.getElementById('review3Title').textContent = t.review3Title;
-            document.getElementById('review3p1').textContent = t.review3p1;
-            document.getElementById('review4Title').textContent = t.review4Title;
-            document.getElementById('review4p1').textContent = t.review4p1;
-            document.getElementById('review5Title').textContent = t.review5Title;
-            document.getElementById('review5p1').textContent = t.review5p1;
-            document.getElementById('shopTitle').textContent = t.shopTitle;
-            document.getElementById('videosGreeting').textContent = t.videosGreeting;
-            document.getElementById('videoPlaceholderText').textContent = t.videoPlaceholderText;
-            document.getElementById('footerText').textContent = t.footer;
-            document.getElementById('copyBtn1').innerHTML = t.copyBtn;
-            document.getElementById('copyBtn2').innerHTML = t.copyBtn;
-            document.getElementById('copyBtn3').innerHTML = t.copyBtn;
-            document.getElementById('copyBtn4').innerHTML = t.copyBtn;
-        }
-        
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-            document.getElementById('themeBtn').textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
-            localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-        }
-        
-        function updateFontSize(size) {
-            document.body.style.setProperty('--base-font-size', size + 'px');
-            document.getElementById('fontSizeValue').textContent = size + 'px';
-            localStorage.setItem('fontSize', size);
-        }
-        
-        function changeFontSize(delta) {
-            let size = parseInt(document.getElementById('fontSizeSlider').value) + delta;
-            size = Math.min(32, Math.max(12, size));
-            document.getElementById('fontSizeSlider').value = size;
-            updateFontSize(size);
-        }
-        
-        function copyCode(codeId) {
-            const codeElement = document.getElementById(codeId);
-            const textArea = document.createElement('textarea');
-            textArea.value = codeElement.textContent;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
+        if(tabId === 'projects') document.getElementById('mainTabProjects').classList.add('active');
+        if(tabId === 'reviews') document.getElementById('mainTabReviews').classList.add('active');
+    }
+
+    // Функция автоматического копирования кода в буфер обмена
+    function copyCode(elementId, btn) {
+        const codeText = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(codeText).then(() => {
+            const notice = document.getElementById('copyNotice');
+            notice.innerText = translations[currentLang].copyNotification;
+            notice.style.display = 'block';
             
-            const notification = document.getElementById('copyNotification');
-            notification.classList.add('show');
-            const btn = event.currentTarget;
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '✅ COPIED!';
-            btn.classList.add('copied');
+            const oldText = btn.innerText;
+            btn.innerText = translations[currentLang].copiedBtn;
+            btn.style.borderColor = '#39ff14';
+            btn.style.color = '#39ff14';
+
             setTimeout(() => {
-                notification.classList.remove('show');
-                btn.innerHTML = originalText;
-                btn.classList.remove('copied');
+                notice.style.display = 'none';
+                btn.innerText = translations[currentLang].copyBtn;
+                btn.style.borderColor = '';
+                btn.style.color = '';
             }, 2000);
-        }
-        
-        function openMainTab(tabId) {
-            document.querySelectorAll('.main-tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.main-tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-            localStorage.setItem('mainTab', tabId);
-        }
-        
-        function openProjectTab(tabId) {
-            document.querySelectorAll('.project-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.project-tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-            localStorage.setItem('projectTab', tabId);
-        }
-        
-        const savedMainTab = localStorage.getItem('mainTab');
-        const savedProjectTab = localStorage.getItem('projectTab');
-        const savedTheme = localStorage.getItem('theme');
-        const savedFontSize = localStorage.getItem('fontSize');
-        const savedLang = localStorage.getItem('language');
-        
-        if (savedMainTab) {
-            document.querySelectorAll('.main-tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.main-tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(savedMainTab).classList.add('active');
-            document.querySelector(`[onclick="openMainTab('${savedMainTab}')"]`).classList.add('active');
-        }
-        if (savedProjectTab && savedMainTab === 'projects') {
-            document.querySelectorAll('.project-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.project-tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(savedProjectTab).classList.add('active');
-            document.querySelector(`[onclick="openProjectTab('${savedProjectTab}')"]`).classList.add('active');
-        }
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-            document.getElementById('themeBtn').textContent = '☀️';
-        }
-        if (savedFontSize) {
-            document.body.style.setProperty('--base-font-size', savedFontSize + 'px');
-            document.getElementById('fontSizeSlider').value = savedFontSize;
-            document.getElementById('fontSizeValue').textContent = savedFontSize + 'px';
-        }
-        if (savedLang) {
-            currentLang = savedLang;
-            updateLanguage();
-        }
-    </script>
+        });
+    }
+</script>
+
 </body>
 </html>
